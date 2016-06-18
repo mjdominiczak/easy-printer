@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-app" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-batch" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-bundle" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-example" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-java7" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-langdetect" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-parsers" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-serialization" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-translate" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/tika-1.13/tika-xmp" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+      <entry name="!?*.aj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="tika-app" />
+        <module name="tika-batch" />
+        <module name="tika-bundle" />
+        <module name="tika-core" />
+        <module name="tika-example" />
+        <module name="tika-java7" />
+        <module name="tika-langdetect" />
+        <module name="tika-parsers" />
+        <module name="tika-serialization" />
+        <module name="tika-server" />
+        <module name="tika-translate" />
+        <module name="tika-xmp" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="tika" target="1.7" />
+      <module name="tika-app" target="1.7" />
+      <module name="tika-batch" target="1.7" />
+      <module name="tika-bundle" target="1.7" />
+      <module name="tika-core" target="1.7" />
+      <module name="tika-example" target="1.7" />
+      <module name="tika-java7" target="1.7" />
+      <module name="tika-langdetect" target="1.7" />
+      <module name="tika-parent" target="1.7" />
+      <module name="tika-parsers" target="1.7" />
+      <module name="tika-serialization" target="1.7" />
+      <module name="tika-server" target="1.7" />
+      <module name="tika-translate" target="1.7" />
+      <module name="tika-xmp" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

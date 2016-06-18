@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EasyPrinter.iml" filepath="$PROJECT_DIR$/EasyPrinter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-app/tika-app.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-app/tika-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-batch/tika-batch.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-batch/tika-batch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-bundle/tika-bundle.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-bundle/tika-bundle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-core/tika-core.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-core/tika-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-example/tika-example.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-example/tika-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-java7/tika-java7.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-java7/tika-java7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-langdetect/tika-langdetect.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-langdetect/tika-langdetect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-parent/tika-parent.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-parent/tika-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-parsers/tika-parsers.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-parsers/tika-parsers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-serialization/tika-serialization.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-serialization/tika-serialization.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-server/tika-server.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-server/tika-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-translate/tika-translate.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-translate/tika-translate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/tika-1.13/tika-xmp/tika-xmp.iml" filepath="$PROJECT_DIR$/lib/tika-1.13/tika-xmp/tika-xmp.iml" />
+    </modules>
+  </component>
+</project>
