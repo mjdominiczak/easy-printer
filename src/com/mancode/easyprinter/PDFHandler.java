@@ -14,6 +14,108 @@ import java.util.ArrayList;
  */
 public class PDFHandler {
 
+    public static int getPageCount(File file) throws IOException {
+        // load file
+        PDDocument pdDocument = PDDocument.load(file);
+        int pageCount = pdDocument.getNumberOfPages();
+        pdDocument.close();
+        return pageCount;
+    }
+
+    public static int getPageCount(PDDocument pdDocument) {
+        return pdDocument.getNumberOfPages();
+    }
+
+    public static PageSize getPageSize(PDDocument pdDocument) throws IOException {
+        PageSize pageSize = getPageSize(pdDocument, 0);
+        int pageCount = getPageCount(pdDocument);
+        if (pageCount > 1) {
+            for (int i = 1; i < pageCount; i++) {
+                if (getPageSize(pdDocument, i) != pageSize) {
+                    pageSize = PageSize.VARIOUS;
+                    break;
+                }
+            }
+        }
+        return pageSize;
+    }
+
+    public static PageSize getPageSize(PDDocument pdDocument, int pageNumber) throws IOException {
+        // get page dimensions
+        PDRectangle box;
+        try {
+            box = pdDocument.getPage(pageNumber).getMediaBox();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return PageSize.GENERAL;
+        }
+        int width = pt2mm(box.getWidth());
+        int height = pt2mm(box.getHeight());
+
+        // check page orientation
+        int maxDim, minDim;
+        if (width > height) {
+            maxDim = width;
+            minDim = height;
+        } else {
+            maxDim = height;
+            minDim = width;
+        }
+
+        // check page format (dimensions in mm)
+        if (minDim == 210 && maxDim == 297) {
+            return PageSize.A4;
+        } else if (minDim == 210 && maxDim == 279) {
+            return PageSize.A4_BOM;
+        } else if (minDim == 297 && maxDim == 420) {
+            return PageSize.A3;
+        } else if (minDim == 420 && maxDim == 594) {
+            return PageSize.A2;
+        } else if (minDim == 594 && maxDim == 841) {
+            return PageSize.A1;
+        } else if (minDim == 841 && maxDim == 1189) {
+            return PageSize.A0;
+        } else if (minDim == 841 && maxDim == 1609) {
+            return PageSize.A0_1609;
+        } else if (minDim == 841 && maxDim == 2450) {
+            return PageSize.A0_2450;
+        } else if (minDim == 841 && maxDim == 3291) {
+            return PageSize.A0_3291;
+        } else if (minDim == 841 && maxDim == 4132) {
+            return PageSize.A0_4132;
+        } else {
+            return PageSize.GENERAL;
+        }
+    }
+
+    public static PDFProperties getPropertiesSet(File file) throws IOException {
+        PDDocument pdDocument = PDDocument.load(file);
+        PageSize pageSize = getPageSize(pdDocument);
+        int pageCount = getPageCount(pdDocument);
+        pdDocument.close();
+        return new PDFProperties(pageCount, pageSize);
+    }
+
+    public static class PDFProperties {
+        private int pageCount;
+        private PageSize pageSize;
+
+        public PDFProperties(int pageCount, PageSize pageSize) {
+            this.pageCount = pageCount;
+            this.pageSize = pageSize;
+        }
+
+        public int getPageCount() {
+            return pageCount;
+        }
+
+        public PageSize getPageSize() {
+            return pageSize;
+        }
+    }
+
+
+
     private PDDocument pdDocument;
     private int pageCount;
     private boolean pageOrientationHorizontal;
@@ -42,60 +144,6 @@ public class PDFHandler {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("IOException while trying to close file:" + pdDocument.getDocumentInformation().getTitle());
-        }
-    }
-
-    public int getPageCount() {
-        return pageCount;
-    }
-
-    public PageSize getPageSize(int pageNumber) {
-        // get page dimensions
-        PDRectangle box = null;
-        try {
-            box = pdDocument.getPage(pageNumber).getMediaBox();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return PageSize.GENERAL;
-        }
-        int width = pt2mm(box.getWidth());
-        int height = pt2mm(box.getHeight());
-
-        // check page orientation
-        int maxDim, minDim;
-        if (width > height) {
-            pageOrientationHorizontal = true;
-            maxDim = width;
-            minDim = height;
-        } else {
-            pageOrientationHorizontal = false;
-            maxDim = height;
-            minDim = width;
-        }
-
-        // check page format (dimensions in mm)
-        if (minDim == 210 && maxDim == 297) {
-            return PageSize.A4;
-        } else if (minDim == 210 && maxDim == 279) {
-            return PageSize.A4_BOM;
-        } else if (minDim == 297 && maxDim == 420) {
-            return PageSize.A3;
-        } else if (minDim == 420 && maxDim == 594) {
-            return PageSize.A2;
-        } else if (minDim == 594 && maxDim == 841) {
-            return PageSize.A1;
-        } else if (minDim == 841 && maxDim == 1189) {
-            return PageSize.A0;
-        } else if (minDim == 841 && maxDim == 1609) {
-            return PageSize.A0_1609;
-        } else if (minDim == 841 && maxDim == 2450) {
-            return PageSize.A0_2450;
-        } else if (minDim == 841 && maxDim == 3291) {
-            return PageSize.A0_3291;
-        } else if (minDim == 841 && maxDim == 4132) {
-            return PageSize.A0_4132;
-        } else {
-            return PageSize.GENERAL;
         }
     }
 
@@ -168,7 +216,7 @@ public class PDFHandler {
     }
 
     // convert default dimensions units (points) to mm: 1 point equals to 1/72 inch
-    private int pt2mm(float pt) {
+    private static int pt2mm(float pt) {
         return Math.round(pt * 25.4f / 72);
     }
 }

@@ -100,20 +100,20 @@ public class FilesHandler extends SimpleFileVisitor<Path> {
         }
     }
 
-    public void inspectFiles() {
-        for (CustomFile file : fileList) {
-            System.out.println("============");
-            System.out.println(file);
-            System.out.println(file.getFileType());
-            if (file.getFileType().equals("application/pdf")) {
-                PDFHandler pdfHandler = new PDFHandler(file);
-                for (int i = 0; i < pdfHandler.getPageCount(); i++) {
-                    System.out.println("Page " + i + ": " + pdfHandler.getPageSize(i));
-                }
-                pdfHandler.closePDF();
-            }
-        }
-    }
+//    public void inspectFiles() {
+//        for (CustomFile file : fileList) {
+//            System.out.println("============");
+//            System.out.println(file);
+//            System.out.println(file.getFileType());
+//            if (file.getFileType().equals("application/pdf")) {
+//                PDFHandler pdfHandler = new PDFHandler(file);
+//                for (int i = 0; i < pdfHandler.getPageCount(); i++) {
+//                    System.out.println("Page " + i + ": " + pdfHandler.getPageSize(i));
+//                }
+//                pdfHandler.closePDF();
+//            }
+//        }
+//    }
 
     public void addFilesFromDirectory(Path path, MainGui mainGui) {
         gui = mainGui;

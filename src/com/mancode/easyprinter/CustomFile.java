@@ -26,7 +26,7 @@ public class CustomFile extends File {
 
     public void runChecks() {
         checkFileType();
-        checkPageSize();
+        checkProperties();
         createFileInfo();
     }
 
@@ -40,19 +40,16 @@ public class CustomFile extends File {
         }
     }
 
-    public void checkPageSize() {
+    public void checkProperties() {
         if (fileType.equals("application/pdf")) {
-            PDFHandler pdfHandler = new PDFHandler(this);
-            pageCount = pdfHandler.getPageCount();
-            pageSize = pdfHandler.getPageSize(0);
-            if (pageCount > 1) {
-                for (int i = 1; i < pageCount; i++) {
-                    if (pdfHandler.getPageSize(i) != pageSize) {
-                        pageSize = PageSize.VARIOUS;
-                    }
-                }
+            try {
+                PDFHandler.PDFProperties properties = PDFHandler.getPropertiesSet(this);
+                pageCount = properties.getPageCount();
+                pageSize = properties.getPageSize();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("IOException while getting properties of file " + getName());
             }
-            pdfHandler.closePDF();
         }
     }
 
@@ -70,6 +67,10 @@ public class CustomFile extends File {
 
     public String getFileType() {
         return fileType;
+    }
+
+    public String getFileInfo() {
+        return fileInfo;
     }
 
     public int getPageCount() {
