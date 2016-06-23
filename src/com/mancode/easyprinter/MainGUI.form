@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mancode.easyprinter.MainGui">
   <grid id="27dc6" binding="easyPrinter" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="565" height="330"/>
+      <xy x="20" y="20" width="562" height="381"/>
     </constraints>
     <properties/>
     <border type="none" title="EasyPrinter"/>

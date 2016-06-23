@@ -1,8 +1,6 @@
 package com.mancode.easyprinter;
 
 import javax.swing.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -40,7 +38,9 @@ public class FileProcessor {
                     incrementCounter();
                     CustomFile customFile = new CustomFile(file.toString());
                     fileListModelMap.get(PageSize.GENERAL).addElement(customFile); // TODO: wprowadzić dzielenie plików na strony
-                    setProgress(100 * counter.get() / filesCount);
+                    int progress = 100 * counter.get() / filesCount;
+//                    System.out.println(progress + ": " + file.toString());
+                    setProgress(progress);
                     return super.visitFile(file, attrs);
                 }
             });
@@ -77,7 +77,8 @@ public class FileProcessor {
         FileProcessorWorker worker = new FileProcessorWorker(path);
         worker.addPropertyChangeListener(evt -> {
             if (evt.getPropertyName().equals("progress")) {
-                progressBar.setValue((Integer)evt.getNewValue());
+                Integer progress = (Integer) evt.getNewValue();
+                progressBar.setValue(Math.min(progress, 100));
             }
         });
         worker.execute();
@@ -93,5 +94,9 @@ public class FileProcessor {
             }
         }
         return count;
+    }
+
+    public DefaultListModel<CustomFile> getFileListModel(PageSize pageSize) {
+        return fileListModelMap.get(pageSize);
     }
 }
