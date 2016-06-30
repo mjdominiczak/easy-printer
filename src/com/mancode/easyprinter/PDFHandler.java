@@ -14,6 +14,28 @@ import java.util.ArrayList;
  */
 public class PDFHandler {
 
+    private PDDocument pdDocument;
+    private int pageCount;
+    private boolean pageOrientationHorizontal;
+    private String filename;
+    private File parentFile;
+
+    PDFHandler(File file) {
+        parentFile = file;
+        loadPDF(file);
+        filename = file.getName();
+    }
+
+    public void loadPDF(File file) {
+        try {
+            pdDocument = PDDocument.load(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("IOException while trying to load file:" + file);
+        }
+        pageCount = pdDocument.getNumberOfPages();
+    }
+
     public static int getPageCount(File file) throws IOException {
         // load file
         PDDocument pdDocument = PDDocument.load(file);
@@ -22,8 +44,12 @@ public class PDFHandler {
         return pageCount;
     }
 
-    public static int getPageCount(PDDocument pdDocument) {
-        return pdDocument.getNumberOfPages();
+    public static PDFProperties getPropertiesSet(File file) throws IOException {
+        PDDocument pdDocument = PDDocument.load(file);
+        PageSize pageSize = getPageSize(pdDocument);
+        int pageCount = getPageCount(pdDocument);
+        pdDocument.close();
+        return new PDFProperties(pageCount, pageSize);
     }
 
     public static PageSize getPageSize(PDDocument pdDocument) throws IOException {
@@ -38,6 +64,10 @@ public class PDFHandler {
             }
         }
         return pageSize;
+    }
+
+    public static int getPageCount(PDDocument pdDocument) {
+        return pdDocument.getNumberOfPages();
     }
 
     public static PageSize getPageSize(PDDocument pdDocument, int pageNumber) throws IOException {
@@ -88,54 +118,61 @@ public class PDFHandler {
         }
     }
 
-    public static PDFProperties getPropertiesSet(File file) throws IOException {
-        PDDocument pdDocument = PDDocument.load(file);
-        PageSize pageSize = getPageSize(pdDocument);
-        int pageCount = getPageCount(pdDocument);
-        pdDocument.close();
-        return new PDFProperties(pageCount, pageSize);
+    // convert default dimensions units (points) to mm: 1 point equals to 1/72 inch
+    private static int pt2mm(float pt) {
+        return Math.round(pt * 25.4f / 72);
     }
 
-    public static class PDFProperties {
-        private int pageCount;
-        private PageSize pageSize;
-
-        public PDFProperties(int pageCount, PageSize pageSize) {
-            this.pageCount = pageCount;
-            this.pageSize = pageSize;
-        }
-
-        public int getPageCount() {
-            return pageCount;
-        }
-
-        public PageSize getPageSize() {
-            return pageSize;
-        }
-    }
-
-
-
-    private PDDocument pdDocument;
-    private int pageCount;
-    private boolean pageOrientationHorizontal;
-    private String filename;
-    private File parentFile;
-
-    PDFHandler(File file) {
-        parentFile = file;
-        loadPDF(file);
-        filename = file.getName();
-    }
-
-    public void loadPDF(File file) {
+    public static void splitDocument(CustomFile file) {
+        PDDocument pdDocument = null;
         try {
             pdDocument = PDDocument.load(file);
         } catch (IOException e) {
+            System.err.println("IOException while trying to open file: " + file);
             e.printStackTrace();
-            System.err.println("IOException while trying to load file:" + file);
         }
-        pageCount = pdDocument.getNumberOfPages();
+//        ArrayList<CustomFile> singlePages = new ArrayList<>();
+        for (int i = 0; i < file.getPageCount(); i++) {
+            File directory = new File(file.getParent() + "\\split");
+            directory.mkdir();
+            String filename = file.getName();
+            String[] splittedFilename = filename.split("\\.");
+            String extension = "." + splittedFilename[splittedFilename.length - 1];
+            String rawFilename = filename.substring(0, filename.lastIndexOf(extension));
+            String newFilename = String.format("%1$s p%2$02d%3$s", rawFilename, i, extension);
+            CustomFile newFile = new CustomFile(directory, newFilename);
+            boolean fileCreated = false;
+            try {
+                fileCreated = newFile.createNewFile();
+            } catch (IOException e) {
+                System.err.println("IOException while trying to create new file: " + newFilename);
+                e.printStackTrace();
+            }
+            if (fileCreated) {
+                PDDocument singlePageDocument = new PDDocument();
+                singlePageDocument.addPage(pdDocument.getPage(i));
+                try {
+                    singlePageDocument.save(newFile);
+                    newFile.runChecks();
+                } catch (IOException e) {
+                    System.err.println("IOException while saving new file: " + newFilename);
+                    e.printStackTrace();
+                }
+                try {
+                    singlePageDocument.close();
+                } catch (IOException e) {
+                    System.err.println("IOException while closing document: " + singlePageDocument.toString());
+                    e.printStackTrace();
+                }
+//                singlePages.add(newFile);
+            }
+        }
+        try {
+            pdDocument.close();
+        } catch (IOException e) {
+            System.err.println("IOException while trying to close file: " + file);
+            e.printStackTrace();
+        }
     }
 
     public void closePDF() {
@@ -215,8 +252,21 @@ public class PDFHandler {
         }
     }
 
-    // convert default dimensions units (points) to mm: 1 point equals to 1/72 inch
-    private static int pt2mm(float pt) {
-        return Math.round(pt * 25.4f / 72);
+    public static class PDFProperties {
+        private int pageCount;
+        private PageSize pageSize;
+
+        public PDFProperties(int pageCount, PageSize pageSize) {
+            this.pageCount = pageCount;
+            this.pageSize = pageSize;
+        }
+
+        public int getPageCount() {
+            return pageCount;
+        }
+
+        public PageSize getPageSize() {
+            return pageSize;
+        }
     }
 }

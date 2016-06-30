@@ -1,30 +1,31 @@
 package com.mancode.easyprinter;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.nio.file.Path;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Created by Michal Dominiczak
  * e-mail: michal-dominiczak@o2.pl
  * Copyright reserved
  */
-public class EasyPrinter extends JPanel implements ActionListener {
-
-    private JButton runButton;
-    private JButton openFolderButton;
-    private JProgressBar progressBar;
-    private JLabel selectDirectoryLabel;
-    private JTextField pathTextField;
-
-    private FileProcessor fileProcessor;
+public class EasyPrinter extends JPanel implements ActionListener, ItemListener {
 
     private final Insets defaultInsets = new Insets(5, 5, 5, 5);
+    private final JPanel additionalListsPanel;
+    private JButton runButton;
+    private JButton openFolderButton;
+    private JButton clearButton;
+    private JProgressBar progressBar;
+    private JTextField pathTextField;
+    private JComboBox pageSizeComboBox;
+    private FileProcessor fileProcessor;
 
     public EasyPrinter() {
         super(new GridBagLayout());
@@ -36,7 +37,7 @@ public class EasyPrinter extends JPanel implements ActionListener {
         fileProcessor = new FileProcessor(progressBar);
 
         //Set components in selectionPanel
-        selectDirectoryLabel = new JLabel("Select directory with data to be printed");
+        JLabel selectDirectoryLabel = new JLabel("Select directory with data to be printed");
         pathTextField = new JTextField();
         pathTextField.setEnabled(false);
         openFolderButton = new JButton("Open");
@@ -52,70 +53,91 @@ public class EasyPrinter extends JPanel implements ActionListener {
         //Set components in mainListPanel
         JList<CustomFile> mainList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
         int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
-        mainList.setFont(new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize));
 
         //Set mainListPanel
         JScrollPane mainListPanel = new JScrollPane(mainList);
 
-        //Set components in additionalListsPanel
-        JList<CustomFile> listA3 = new JList<>(fileProcessor.getFileListModel(PageSize.A3));
-        listA3.setFont(new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize));
-
+        //Set components in cardAXPanels
         //Set additionalListsPanel
-        JPanel additionalListsPanel = new JPanel(new CardLayout());
-        JScrollPane listA3Panel= new JScrollPane(listA3);
-        additionalListsPanel.add(listA3Panel);
+        additionalListsPanel = new JPanel(new CardLayout());
+        Map<PageSize, JList<CustomFile>> additionalListsMap = new EnumMap<>(PageSize.class);
+        Map<PageSize, JScrollPane> scrollPanesMap = new EnumMap<>(PageSize.class);
+        Font font = new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize);
+        mainList.setFont(font);
+        for (PageSize pageSize : PageSize.values()) {
+            if (pageSize != PageSize.GENERAL &&
+                    pageSize != PageSize.VARIOUS) {
+                JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(pageSize));
+//                JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
+                additionalListsMap.put(pageSize, thisList);
+                JScrollPane scrollPane = new JScrollPane(thisList);
+                scrollPanesMap.put(pageSize, scrollPane);
+                thisList.setFont(font);
+                JPanel listPanel = new JPanel(new BorderLayout());
+                listPanel.add(scrollPane);
+                additionalListsPanel.add(listPanel, pageSize.getText());
+            }
+        }
+
+        //Set pageSizeComboBoxPanel
+        JPanel pageSizeComboBoxPanel = new JPanel(new BorderLayout());
+        pageSizeComboBox = new JComboBox<>(fileProcessor.getPageSizeComboBoxModel());
+        pageSizeComboBox.setEditable(false);
+        pageSizeComboBox.addItemListener(this);
+//        pageSizeComboBox.setEnabled(false);
+        pageSizeComboBoxPanel.add(pageSizeComboBox);
 
         //Set components in progressPanel
         progressBar.setValue(0);
-        progressBar.setStringPainted(true);
+        progressBar.setStringPainted(false);
 
         //Set progressPanel
         JPanel progressPanel = new JPanel(new BorderLayout());
         progressPanel.add(progressBar, BorderLayout.CENTER);
 
+        //Set components in buttonsPanel
+        clearButton = new JButton("Clear");
+        clearButton.setActionCommand("clear");
+        clearButton.addActionListener(this);
+
+        //Set buttonsPanel
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.add(clearButton);
+
+
         //Define constraints for top level panels and add them to the main layout
         //Set constraints for selectionPanel
-        GridBagConstraints selectionPanelConstraints = new GridBagConstraints();
-        selectionPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
-        selectionPanelConstraints.gridx = 0;
-        selectionPanelConstraints.gridy = 0;
-        selectionPanelConstraints.gridwidth = 2;
-        selectionPanelConstraints.weightx = 0.5;
-        selectionPanelConstraints.insets = defaultInsets;
+        GridBagConstraints selectionPanelConstraints = new GridBagConstraints(
+                //gridx, gridy, gridwidth, gridheight, weightx, weighty, anchor, fill, insets, ipadx, ipady
+                0, 0, 2, 1, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
 
         //Set constraints for mainListPanel
-        GridBagConstraints mainListConstraints = new GridBagConstraints();
-        mainListConstraints.fill = GridBagConstraints.BOTH;
-        mainListConstraints.gridx = 0;
-        mainListConstraints.gridy = 1;
-        mainListConstraints.weightx = 0.5;
-        mainListConstraints.weighty = 1;
-        mainListConstraints.insets = defaultInsets;
+        GridBagConstraints mainListConstraints = new GridBagConstraints(
+                0, 1, 1, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, defaultInsets, 0, 0);
+
+        //Set constraints for pageSizeComboBoxPanel
+        GridBagConstraints pageSizeComboBoxConstraints = new GridBagConstraints(
+                1, 1, 1, 1, 0.5, 0, GridBagConstraints.LINE_END, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
 
         //Set constraints for additionalListsPanel
-        GridBagConstraints additionalListsConstraints = new GridBagConstraints();
-        additionalListsConstraints.fill = GridBagConstraints.BOTH;
-        additionalListsConstraints.gridx = 1;
-        additionalListsConstraints.gridy = 1;
-        additionalListsConstraints.weightx = 0.5;
-        additionalListsConstraints.weighty = 1;
-        additionalListsConstraints.insets = defaultInsets;
+        GridBagConstraints additionalListsConstraints = new GridBagConstraints(
+                1, 2, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, defaultInsets, 0, 0);
 
         //Set constraints for progressPanel
-        GridBagConstraints progressPanelConstraints = new GridBagConstraints();
-        progressPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
-        progressPanelConstraints.gridx = 0;
-        progressPanelConstraints.gridy = 2;
-        progressPanelConstraints.gridwidth = 1;
-        progressPanelConstraints.weightx = 0.5;
-        progressPanelConstraints.insets = defaultInsets;
+        GridBagConstraints progressPanelConstraints = new GridBagConstraints(
+                0, 3, 1, 1, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
+
+        //Set constraints for buttonsPanel
+        GridBagConstraints buttonsPanelConstraints = new GridBagConstraints(
+                1, 3, 1, 1, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
 
         //Add panels to the main layout
         add(selectionPanel, selectionPanelConstraints);
         add(mainListPanel, mainListConstraints);
+        add(pageSizeComboBoxPanel, pageSizeComboBoxConstraints);
         add(additionalListsPanel, additionalListsConstraints);
         add(progressPanel, progressPanelConstraints);
+        add(buttonsPanel, buttonsPanelConstraints);
 
     }
 
@@ -132,8 +154,8 @@ public class EasyPrinter extends JPanel implements ActionListener {
         // Set look and feel
         try {
             UIManager.setLookAndFeel(
-//                    UIManager.getSystemLookAndFeelClassName()
-                    UIManager.getCrossPlatformLookAndFeelClassName()
+                    UIManager.getSystemLookAndFeelClassName()
+//                    UIManager.getCrossPlatformLookAndFeelClassName()
 //                    "com.sun.java.swing.plaf.motif.MotifLookAndFeel"
 //                    "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
             );
@@ -172,6 +194,8 @@ public class EasyPrinter extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("open")) {
             openDirectory();
+        } else if (e.getActionCommand().equals("clear")) {
+            clear();
         }
     }
 
@@ -183,6 +207,20 @@ public class EasyPrinter extends JPanel implements ActionListener {
             Path path = openFileChooser.getSelectedFile().toPath();
             pathTextField.setText(path.toString());
             fileProcessor.addFilesFromDirectory(path);
+        }
+    }
+
+    private void clear() {
+        pathTextField.setText("");
+        fileProcessor.clear();
+        openFolderButton.requestFocus();
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == pageSizeComboBox) {
+            CardLayout cl = (CardLayout)(additionalListsPanel.getLayout());
+            cl.show(additionalListsPanel, e.getItem().toString());
         }
     }
 
