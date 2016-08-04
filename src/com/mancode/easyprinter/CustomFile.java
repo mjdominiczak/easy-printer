@@ -2,8 +2,11 @@ package com.mancode.easyprinter;
 
 import org.apache.tika.Tika;
 
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Michał Dominiczak
@@ -15,20 +18,24 @@ public class CustomFile extends File {
 
     private String fileInfo;
     private String fileType;
+    private int drawingNumber;
+    private int sheetNumber;
     private int pageCount;
     private PageSize pageSize;
-    public CustomFile(String pathname) {
+
+    CustomFile(String pathname) {
         super(pathname);
         runChecks();
     }
 
-    public void runChecks() {
+    void runChecks() {
         checkFileType();
+        checkDrawingNumber();
         checkProperties();
         createFileInfo();
     }
 
-    public void checkFileType() {
+    private void checkFileType() {
         Tika tika = new Tika();
         try {
             fileType = tika.detect(this);
@@ -38,20 +45,24 @@ public class CustomFile extends File {
         }
     }
 
-    public void checkProperties() {
-        if (fileType.equals("application/pdf")) {
-            try {
-                PDFHandler.PDFProperties properties = PDFHandler.getPropertiesSet(this);
-                pageCount = properties.getPageCount();
-                pageSize = properties.getPageSize();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("IOException while getting properties of file " + getName());
-            }
+    private void checkDrawingNumber() {
+        String name = getName();
+        Pattern pattern = Pattern.compile("500[0-9]{6}");
+        Matcher matcher = pattern.matcher(name);
+        if (matcher.lookingAt()) {
+            drawingNumber = Integer.parseInt(matcher.group());
         }
     }
 
-    public void createFileInfo() {
+    private void checkProperties() {
+        if (fileType.equals("application/pdf")) {
+            PDFHandler.PDFProperties properties = PDFHandler.getPropertiesSet(this);
+            pageCount = properties.getPageCount();
+            pageSize = properties.getPageSize();
+        }
+    }
+
+    private void createFileInfo() {
         if (fileType.equals("application/pdf")) {
             fileInfo = String.format("%-30s Pcount: %-5s Psize: %-10s", getName(), pageCount, pageSize);
         } else {
@@ -59,8 +70,22 @@ public class CustomFile extends File {
         }
     }
 
-    public CustomFile(File parent, String child) {
+    CustomFile(File parent, String child) {
         super(parent, child);
+    }
+
+    void printPDF() {
+        if (fileType.equals("application/pdf")) {
+            try {
+                PDFHandler.printPDF(this);
+            } catch (PrinterException e) {
+                e.printStackTrace();
+                System.err.println("PrinterException: ");
+                System.err.println(e.getMessage());
+            }
+        } else {
+            System.err.println("File format is not pdf!");
+        }
     }
 
     @Override
@@ -77,11 +102,11 @@ public class CustomFile extends File {
         }
     }
 
-    public PageSize getPageSize() {
+    PageSize getPageSize() {
         return pageSize;
     }
 
-    public String getFileType() {
+    String getFileType() {
         return fileType;
     }
 
@@ -89,7 +114,34 @@ public class CustomFile extends File {
         return fileInfo;
     }
 
-    public int getPageCount() {
+    int getPageCount() {
         return pageCount;
     }
+
+    int getDrawingNumber() {
+        return drawingNumber;
+    }
+
+//    /**
+//     * Comparator class for sorting list according to referenceList order
+//     */
+//    class ERComparator implements Comparator<CustomFile> {
+//
+//        @Override
+//        public int compare(CustomFile file1, CustomFile file2) {
+//            int index1 = referenceList.indexOf(file1.drawingNumber);
+//            int index2 = referenceList.indexOf(file2.drawingNumber);
+//            if (index1 == -1) {
+//                throw new IllegalArgumentException(file1.drawingNumber + " not found in ER!");
+//            } else if (index2 == -1) {
+//                throw new IllegalArgumentException(file2.drawingNumber + " not found in ER!");
+//            }
+//            int result = index1 - index2;
+//            if (result == 0) {
+//                return file1.compareTo(file2);
+//            }
+//            return result;
+//        }
+//    }
+
 }

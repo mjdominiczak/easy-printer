@@ -1,58 +1,74 @@
 package com.mancode.easyprinter;
 
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
+import javax.swing.*;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
- * Created by Manveru on 27.05.2016.
+ * Created by Michał Dominiczak
+ * on 27.05.2016
+ * e-mail: michal-dominiczak@o2.pl
+ * Copyright reserved
  */
-public class PDFHandler {
+class PDFHandler {
 
-    private PDDocument pdDocument;
-    private int pageCount;
-    private boolean pageOrientationHorizontal;
-    private String filename;
-    private File parentFile;
+//    private PDDocument pdDocument;
+//    private int pageCount;
+//    private String filename;
+//    private File parentFile;
 
-    PDFHandler(File file) {
-        parentFile = file;
-        loadPDF(file);
-        filename = file.getName();
+//    PDFHandler(File file) {
+//        parentFile = file;
+//        loadPDF(file);
+//        filename = file.getName();
+//    }
+
+    public static int getPageCount(File file) {
+        // load file
+        PDDocument pdDocument = loadPDF(file);
+        int pageCount = pdDocument.getNumberOfPages();
+        closePDF(pdDocument);
+        return pageCount;
     }
 
-    public void loadPDF(File file) {
+    private static PDDocument loadPDF(File file) {
+        PDDocument pdDocument = new PDDocument();
         try {
+            pdDocument.close();
             pdDocument = PDDocument.load(file);
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("IOException while trying to load file:" + file);
         }
-        pageCount = pdDocument.getNumberOfPages();
+        return pdDocument;
     }
 
-    public static int getPageCount(File file) throws IOException {
-        // load file
-        PDDocument pdDocument = PDDocument.load(file);
-        int pageCount = pdDocument.getNumberOfPages();
-        pdDocument.close();
-        return pageCount;
+    private static void closePDF(PDDocument pdDocument) {
+        try {
+            pdDocument.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("IOException while trying to close file:" + pdDocument.getDocumentInformation().getTitle());
+        }
     }
 
-    public static PDFProperties getPropertiesSet(File file) throws IOException {
-        PDDocument pdDocument = PDDocument.load(file);
+    public static PDFProperties getPropertiesSet(File file) {
+        PDDocument pdDocument = loadPDF(file);
         PageSize pageSize = getPageSize(pdDocument);
         int pageCount = getPageCount(pdDocument);
-        pdDocument.close();
+        closePDF(pdDocument);
         return new PDFProperties(pageCount, pageSize);
     }
 
-    public static PageSize getPageSize(PDDocument pdDocument) throws IOException {
+    public static PageSize getPageSize(PDDocument pdDocument) {
         PageSize pageSize = getPageSize(pdDocument, 0);
         int pageCount = getPageCount(pdDocument);
         if (pageCount > 1) {
@@ -70,7 +86,7 @@ public class PDFHandler {
         return pdDocument.getNumberOfPages();
     }
 
-    public static PageSize getPageSize(PDDocument pdDocument, int pageNumber) throws IOException {
+    public static PageSize getPageSize(PDDocument pdDocument, int pageNumber) {
         // get page dimensions
         PDRectangle box;
         try {
@@ -123,15 +139,9 @@ public class PDFHandler {
         return Math.round(pt * 25.4f / 72);
     }
 
-    public static void splitDocument(CustomFile file) {
-        PDDocument pdDocument = null;
-        try {
-            pdDocument = PDDocument.load(file);
-        } catch (IOException e) {
-            System.err.println("IOException while trying to open file: " + file);
-            e.printStackTrace();
-        }
-//        ArrayList<CustomFile> singlePages = new ArrayList<>();
+    static ArrayList<CustomFile> splitDocument(CustomFile file) {
+        PDDocument pdDocument = loadPDF(file);
+        ArrayList<CustomFile> singlePages = new ArrayList<>();
         for (int i = 0; i < file.getPageCount(); i++) {
             File directory = new File(file.getParent() + "\\split");
             directory.mkdir();
@@ -164,91 +174,84 @@ public class PDFHandler {
                     System.err.println("IOException while closing document: " + singlePageDocument.toString());
                     e.printStackTrace();
                 }
-//                singlePages.add(newFile);
-            }
-        }
-        try {
-            pdDocument.close();
-        } catch (IOException e) {
-            System.err.println("IOException while trying to close file: " + file);
-            e.printStackTrace();
-        }
-    }
-
-    public void closePDF() {
-        try {
-            pdDocument.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("IOException while trying to close file:" + pdDocument.getDocumentInformation().getTitle());
-        }
-    }
-
-    public void addPagesToDocument(File targetFile) {
-        PDDocument targetDocument = null;
-        try {
-            targetDocument = PDDocument.load(targetFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("IOException while trying to load file:" + targetFile);
-        }
-        for (PDPage page : pdDocument.getPages()) {
-            targetDocument.addPage(page);
-        }
-        try {
-            targetDocument.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("IOException while trying to close file:" + targetDocument.getDocumentInformation().getTitle());
-        }
-    }
-
-    public ArrayList<CustomFile> splitDocument() {
-        ArrayList<CustomFile> singlePages = new ArrayList<>();
-        for (int i = 0; i < pageCount; i++) {
-            File directory = new File(parentFile.getParent() + "\\split");
-            directory.mkdir();
-            String[] splittedFilename = filename.split("\\.");
-            String extension = "." + splittedFilename[splittedFilename.length - 1];
-            String rawFilename = filename.substring(0, filename.lastIndexOf(extension));
-            String newFilename = rawFilename + " page " + i + extension;
-            CustomFile newFile = new CustomFile(directory, newFilename);
-            boolean fileCreated = false;
-            try {
-                fileCreated = newFile.createNewFile();
-            } catch (IOException e) {
-                System.err.println("IOException while trying to create new file: " + newFilename);
-                e.printStackTrace();
-            }
-            if (fileCreated) {
-                PDDocument singlePageDocument = new PDDocument();
-                singlePageDocument.addPage(pdDocument.getPage(i));
-                try {
-                    singlePageDocument.save(newFile);
-                    newFile.runChecks();
-                } catch (IOException e) {
-                    System.err.println("IOException while saving new file: " + newFilename);
-                    e.printStackTrace();
-                }
-                try {
-                    singlePageDocument.close();
-                } catch (IOException e) {
-                    System.err.println("IOException while closing document: " + singlePageDocument.toString());
-                    e.printStackTrace();
-                }
                 singlePages.add(newFile);
             }
         }
+        closePDF(pdDocument);
         return singlePages;
     }
 
-    public void printPDF() {
-        PrintHandler printHandler = new PrintHandler();
+    public static void mergePDFs(File targetFile, DefaultListModel<CustomFile> listModel) {
+        PDFMergerUtility merger = new PDFMergerUtility();
+        merger.setDestinationFileName(targetFile.getAbsolutePath());
+        Collections.list(listModel.elements()).forEach(file -> {
+            try {
+                merger.addSource(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
         try {
-            printHandler.printPDF(pdDocument);
-        } catch (PrinterException e) {
+            merger.mergeDocuments(null);
+        } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("PrinterException while trying to print " + pdDocument);
+        }
+    }
+
+//    public ArrayList<CustomFile> splitDocument() {
+//        ArrayList<CustomFile> singlePages = new ArrayList<>();
+//        for (int i = 0; i < pageCount; i++) {
+//            File directory = new File(parentFile.getParent() + "\\split");
+//            directory.mkdir();
+//            String[] splittedFilename = filename.split("\\.");
+//            String extension = "." + splittedFilename[splittedFilename.length - 1];
+//            String rawFilename = filename.substring(0, filename.lastIndexOf(extension));
+//            String newFilename = rawFilename + " page " + i + extension;
+//            CustomFile newFile = new CustomFile(directory, newFilename);
+//            boolean fileCreated = false;
+//            try {
+//                fileCreated = newFile.createNewFile();
+//            } catch (IOException e) {
+//                System.err.println("IOException while trying to create new file: " + newFilename);
+//                e.printStackTrace();
+//            }
+//            if (fileCreated) {
+//                PDDocument singlePageDocument = new PDDocument();
+//                singlePageDocument.addPage(pdDocument.getPage(i));
+//                try {
+//                    singlePageDocument.save(newFile);
+//                    newFile.runChecks();
+//                } catch (IOException e) {
+//                    System.err.println("IOException while saving new file: " + newFilename);
+//                    e.printStackTrace();
+//                }
+//                try {
+//                    singlePageDocument.close();
+//                } catch (IOException e) {
+//                    System.err.println("IOException while closing document: " + singlePageDocument.toString());
+//                    e.printStackTrace();
+//                }
+//                singlePages.add(newFile);
+//            }
+//        }
+//        return singlePages;
+//    }
+
+    public static void printPDF(File file) throws PrinterException {
+        PDDocument pdDocument = null;
+        try {
+            pdDocument = PDDocument.load(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("IOException while loading file for printing: " + file.getName());
+        }
+        PrintHandler printHandler = new PrintHandler();
+        printHandler.printPDF(pdDocument);
+        try {
+            pdDocument.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("IOException while closing file for printing: " + file.getName());
         }
     }
 

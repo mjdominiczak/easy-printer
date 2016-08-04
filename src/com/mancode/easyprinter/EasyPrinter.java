@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
+import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Map;
@@ -19,16 +21,23 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 
     private final Insets defaultInsets = new Insets(5, 5, 5, 5);
     private final JPanel additionalListsPanel;
-    private JButton runButton;
+    private final JList<CustomFile> mainList;
     private JButton openFolderButton;
     private JButton clearButton;
+    private JButton openERButton;
+    private JButton printButton;
+    private JButton mergeButton;
     private JProgressBar progressBar;
     private JTextField pathTextField;
     private JComboBox pageSizeComboBox;
+    private JTextArea console;
     private FileProcessor fileProcessor;
 
     public EasyPrinter() {
         super(new GridBagLayout());
+
+        int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
+        Font font = new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize);
 
         //Initialize progress bar
         progressBar = new JProgressBar(0, 100);
@@ -36,8 +45,20 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         //Initialize the file processor
         fileProcessor = new FileProcessor(progressBar);
 
+        //Initialize a console
+        console = new JTextArea(30,40);
+        console.setFont(font);
+        console.setEditable(false);
+//        console.setBorder(BorderFactory.createLineBorder(Color.black));
+        PrintStream printStream = new PrintStream(new MyOutputStream(console));
+        System.setOut(printStream);
+        System.setErr(printStream);
+
+        //Set console panel
+        JScrollPane consoleScrollPane = new JScrollPane(console);
+
         //Set components in selectionPanel
-        JLabel selectDirectoryLabel = new JLabel("Select directory with data to be printed");
+        JLabel selectDirectoryLabel = new JLabel("Open directory with data to be printed");
         pathTextField = new JTextField();
         pathTextField.setEnabled(false);
         openFolderButton = new JButton("Open");
@@ -51,8 +72,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         selectionPanel.add(openFolderButton, BorderLayout.EAST);
 
         //Set components in mainListPanel
-        JList<CustomFile> mainList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
-        int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
+        mainList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
 
         //Set mainListPanel
         JScrollPane mainListPanel = new JScrollPane(mainList);
@@ -62,11 +82,9 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         additionalListsPanel = new JPanel(new CardLayout());
         Map<PageSize, JList<CustomFile>> additionalListsMap = new EnumMap<>(PageSize.class);
         Map<PageSize, JScrollPane> scrollPanesMap = new EnumMap<>(PageSize.class);
-        Font font = new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize);
         mainList.setFont(font);
         for (PageSize pageSize : PageSize.values()) {
-            if (pageSize != PageSize.GENERAL &&
-                    pageSize != PageSize.VARIOUS) {
+            if (pageSize != PageSize.VARIOUS) {
                 JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(pageSize));
 //                JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
                 additionalListsMap.put(pageSize, thisList);
@@ -96,14 +114,28 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         progressPanel.add(progressBar, BorderLayout.CENTER);
 
         //Set components in buttonsPanel
+        openERButton = new JButton("Open ER (.xlsx)");
+        openERButton.setActionCommand("openER");
+        openERButton.addActionListener(this);
+
         clearButton = new JButton("Clear");
         clearButton.setActionCommand("clear");
         clearButton.addActionListener(this);
 
+        printButton = new JButton("Print");
+        printButton.setActionCommand("print");
+        printButton.addActionListener(this);
+
+        mergeButton = new JButton("Merge list");
+        mergeButton.setActionCommand("merge");
+        mergeButton.addActionListener(this);
+
         //Set buttonsPanel
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.add(openERButton);
+        buttonsPanel.add(printButton);
+        buttonsPanel.add(mergeButton);
         buttonsPanel.add(clearButton);
-
 
         //Define constraints for top level panels and add them to the main layout
         //Set constraints for selectionPanel
@@ -131,6 +163,10 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         GridBagConstraints buttonsPanelConstraints = new GridBagConstraints(
                 1, 3, 1, 1, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
 
+        //Set constraints for consoleScrollPane
+        GridBagConstraints consoleScrollPaneConstraints = new GridBagConstraints(
+                2, 0, 1, 4, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, defaultInsets, 0, 0);
+
         //Add panels to the main layout
         add(selectionPanel, selectionPanelConstraints);
         add(mainListPanel, mainListConstraints);
@@ -138,15 +174,14 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         add(additionalListsPanel, additionalListsConstraints);
         add(progressPanel, progressPanelConstraints);
         add(buttonsPanel, buttonsPanelConstraints);
+        add(consoleScrollPane, consoleScrollPaneConstraints);
 
     }
 
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(() -> {
-            createAndShowGui();
-        });
+        SwingUtilities.invokeLater(() -> createAndShowGui());
 
     }
 
@@ -194,6 +229,12 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("open")) {
             openDirectory();
+        } else if (e.getActionCommand().equals("openER")) {
+            openER();
+        } else if (e.getActionCommand().equals("print")) {
+            print();
+        } else if (e.getActionCommand().equals("merge")) {
+            merge();
         } else if (e.getActionCommand().equals("clear")) {
             clear();
         }
@@ -210,8 +251,45 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         }
     }
 
+    private void openER() {
+        final JFileChooser openFileChooser = new JFileChooser();
+        openFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int returnValue = openFileChooser.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = openFileChooser.getSelectedFile();
+            try {
+                fileProcessor.addER(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }
+
+    private void print() {
+        mainList.getSelectedValue().printPDF();
+    }
+
+    private void merge() {
+        final JFileChooser saveFileChooser = new JFileChooser();
+//        saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        String filename = "all " + pageSizeComboBox.getSelectedItem().toString() + ".pdf";
+        saveFileChooser.setSelectedFile(new File(filename));
+        int returnValue = saveFileChooser.showSaveDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = saveFileChooser.getSelectedFile();
+            try {
+                fileProcessor.mergeList(file, (PageSize)pageSizeComboBox.getSelectedItem());
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }
+
     private void clear() {
         pathTextField.setText("");
+        console.setText("");
         fileProcessor.clear();
         openFolderButton.requestFocus();
     }
@@ -223,12 +301,4 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             cl.show(additionalListsPanel, e.getItem().toString());
         }
     }
-
-//    @Override
-//    public void propertyChange(PropertyChangeEvent evt) {
-//        if (evt.getPropertyName().equals("progress")) {
-//            int progress = (Integer) evt.getNewValue();
-//            progressBar.setValue(progress);
-//        }
-//    }
 }

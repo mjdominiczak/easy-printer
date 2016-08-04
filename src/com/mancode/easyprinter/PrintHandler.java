@@ -1,10 +1,8 @@
 package com.mancode.easyprinter;
 
-import javafx.print.Printer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 
-import javax.print.DocFlavor;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -14,7 +12,10 @@ import java.awt.print.PrinterJob;
 import java.util.Vector;
 
 /**
- * Created by Manveru on 27.05.2016.
+ * Created by Michał Dominiczak
+ * on 27.05.2016
+ * e-mail: michal-dominiczak@o2.pl
+ * Copyright reserved
  */
 public class PrintHandler {
 
@@ -25,26 +26,6 @@ public class PrintHandler {
     public PrintHandler() {
         printerJob = PrinterJob.getPrinterJob();
         printService = printerJob.getPrintService();
-    }
-
-    public PrinterJob getPrinterJob() {
-        return printerJob;
-    }
-
-    private void setPrintAttributes() {
-        printAttributes = new HashPrintRequestAttributeSet();
-    }
-
-    public void printPDF(PDDocument document) throws PrinterException {
-//        DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
-        PDFPageable pageableDocument = new PDFPageable(document);
-        if (printService != null) {
-            printerJob.setPrintService(printService);
-        }
-        printerJob.setPageable(pageableDocument);
-        if (printerJob.printDialog()) {
-            printerJob.print();
-        }
     }
 
     public static Vector<String> getAvailablePrinters() {
@@ -58,6 +39,25 @@ public class PrintHandler {
 
     public static PrintService getDefaultPrinter() {
         return PrinterJob.getPrinterJob().getPrintService();
+    }
+
+    public PrinterJob getPrinterJob() {
+        return printerJob;
+    }
+
+    private void setPrintAttributes() {
+        printAttributes = new HashPrintRequestAttributeSet();
+    }
+
+    public void printPDF(PDDocument document) throws PrinterException {
+        PDFPageable pageableDocument = new PDFPageable(document);
+        if (printService != null) {
+            printerJob.setPrintService(printService);
+        }
+        printerJob.setPageable(pageableDocument);
+        if (printerJob.printDialog()) {
+            printerJob.print();
+        }
     }
 
     public void setPrintService(PrintService printService) {
