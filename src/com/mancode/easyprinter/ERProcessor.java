@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Michał Dominiczak
@@ -33,7 +35,8 @@ class ERProcessor {
      * - duplicates removed (unique drawings)
      * - contains only drawing numbers (500xxxxxx)
      */
-    private List<Integer> referenceList;
+//    private List<Integer> referenceList;
+    private List<FileSignature> referenceList;
 
     ERProcessor(File engineeringReleaseFile) {
         this.engineeringReleaseFile = engineeringReleaseFile;
@@ -59,8 +62,9 @@ class ERProcessor {
                     scanner.next();
                     while (scanner.hasNext()) {
                         int nextInt = scanner.nextInt();
-                        if (!referenceList.contains(nextInt)) {
-                            referenceList.add(nextInt);
+                        FileSignature tmp = new FileSignature(nextInt, "", false);
+                        if (!referenceList.contains(tmp)) {
+                            referenceList.add(tmp);
                         }
                     }
                     break;
@@ -69,15 +73,24 @@ class ERProcessor {
                     XSSFSheet sheet = wb.getSheetAt(0);
                     int headerRowNo = -1;
                     int drawingColNo = -1;
+                    int bomColNo = -1;
+                    int descriptionColNo = -1;
                     int yellowColNo = -1;
                     searchLoop: {
                         for (Row row : sheet) {
                             for (Cell cell : row) {
-                                if (drawingColNo < 0 || yellowColNo < 0) {
+                                if (drawingColNo < 0
+                                        || bomColNo < 0
+                                        || descriptionColNo < 0
+                                        || yellowColNo < 0) {
                                     if (drawingColNo < 0 && checkStringValue(cell, "Draw. ")) {
                                         drawingColNo = cell.getColumnIndex();
                                         headerRowNo = cell.getRowIndex();
                                     }
+                                    if (descriptionColNo < 0 && checkStringValue(cell, "Description"))
+                                        descriptionColNo = cell.getColumnIndex();
+                                    if (bomColNo < 0 && checkStringValue(cell, "BOM"))
+                                        bomColNo = cell.getColumnIndex();
                                     if (yellowColNo < 0 && checkFillColor(cell, "FFFFFF00"))
                                         yellowColNo = cell.getColumnIndex();
                                 } else {
@@ -86,23 +99,36 @@ class ERProcessor {
                             }
                         }
                     }
-                    if (headerRowNo < 0 || drawingColNo < 0 || yellowColNo < 0) {
-                        System.err.println("Yellow formatted cell or \"Draw. No.:\" column not found!");
+                    if (headerRowNo < 0 || drawingColNo < 0 || descriptionColNo < 0 || yellowColNo < 0) {
+                        System.err.println("Yellow formatted cell or \"Draw. No.:\" column or \"Description\" column not found!");
                         break;
                     }
                     for (int i = headerRowNo + 1; i < sheet.getLastRowNum(); i++) {
                         Row row = sheet.getRow(i);
                         Cell checkCell = row.getCell(yellowColNo);
+                        Cell descriptionCell = row.getCell(descriptionColNo);
+                        Cell bomCell = row.getCell(bomColNo);
                         boolean transferToReferenceList = false;
+                        boolean hasBOM = false;
                         if (checkCell != null) {
                             switch (checkCell.getCellType()) {
                                 case Cell.CELL_TYPE_STRING:
-                                    if (checkCell.getStringCellValue().toLowerCase().trim().equals("x"))
-                                        transferToReferenceList = true;
+                                    if (checkCell.getStringCellValue().toLowerCase().trim().equals("x")) {
+                                        Pattern pattern = Pattern.compile(".*general.*list.*");
+                                        Matcher matcher = pattern.matcher(descriptionCell.getStringCellValue().toLowerCase());
+                                        transferToReferenceList = !matcher.lookingAt();
+                                        if (bomCell.getCellType() == Cell.CELL_TYPE_STRING) {
+                                            if (!bomCell.getStringCellValue().equals("")) hasBOM = true;
+                                        }
+                                    }
                                     break;
                                 case Cell.CELL_TYPE_NUMERIC:
-                                    if (checkCell.getNumericCellValue() > 0)
+                                    if (checkCell.getNumericCellValue() > 0) {
                                         transferToReferenceList = true;
+                                        if (bomCell.getCellType() == Cell.CELL_TYPE_STRING) {
+                                            if (!bomCell.getStringCellValue().equals("")) hasBOM = true;
+                                        }
+                                    }
                                     break;
                                 default:
                                     break;
@@ -121,8 +147,12 @@ class ERProcessor {
                                 default:
                                     break;
                             }
-                            if (!referenceList.contains(drawingNo)) {
-                                referenceList.add(drawingNo);
+                            FileSignature tmp = new FileSignature(drawingNo, "", hasBOM);
+                            if (!referenceList.contains(tmp)) {
+                                referenceList.add(tmp);
+                                if (hasBOM) {
+                                    referenceList.add(new FileSignature(drawingNo, "", false));
+                                }
                             }
                         }
                     }
@@ -143,7 +173,7 @@ class ERProcessor {
     }
 
     private boolean checkStringValue(Cell cell, String text) {
-        return cell.getCellType() == Cell.CELL_TYPE_STRING && cell.getStringCellValue().startsWith(text);
+        return cell.getCellType() == Cell.CELL_TYPE_STRING && cell.getStringCellValue().contains(text);
     }
 
     private boolean checkFillColor(Cell cell, String argbHexColor) {
@@ -151,7 +181,7 @@ class ERProcessor {
         return color != null && color.getARGBHex().equals(argbHexColor);
     }
 
-    public List<Integer> getReferenceList() {
+    List<FileSignature> getReferenceList() {
         return referenceList;
     }
 
@@ -162,20 +192,19 @@ class ERProcessor {
 
         @Override
         public int compare(CustomFile file1, CustomFile file2) {
-            int index1 = referenceList.indexOf(file1.getDrawingNumber());
-            int index2 = referenceList.indexOf(file2.getDrawingNumber());
-            if (index1 == -1) {
-                System.err.println(file1.getName() + " not found in ER!");
+            int index1 = referenceList.indexOf(file1.getSignature());
+            int index2 = referenceList.indexOf(file2.getSignature());
+            if ((index1 == -1 && index2 == -1) || index1 == index2) {
                 return file1.compareTo(file2);
+            } else if (index1 == -1) {
+                System.err.println(file1.getName() + " not found in ER!");
+                return 1;
             } else if (index2 == -1) {
                 System.err.println(file2.getName() + " not found in ER!");
-                return file1.compareTo(file2);
+                return -1;
+            } else {
+                return index1 - index2;
             }
-            int result = index1 - index2;
-            if (result == 0) {
-                return file1.compareTo(file2);
-            }
-            return result;
         }
     }
 }

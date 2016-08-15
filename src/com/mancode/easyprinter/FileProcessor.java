@@ -83,6 +83,8 @@ class FileProcessor {
         if (engineeringRelease.getName().endsWith(".xlsx")) {
             erProcessor = new ERProcessor(engineeringRelease);
             sortListModels(SortType.REFERENCE_LIST);
+            updateExistsInER();
+            checkERConsistency();
         } else {
             throw new Exception("ER file must be in .xlsx format");
         }
@@ -110,12 +112,54 @@ class FileProcessor {
         });
     }
 
+    private void updateExistsInER() {
+        for (int i = 0; i < fileListModelMap.get(PageSize.GENERAL).getSize(); i++) {
+            CustomFile file = fileListModelMap.get(PageSize.GENERAL).get(i);
+            if (erProcessor.getReferenceList().contains(file.getSignature())) {
+                file.setExistsInER(1);
+            } else {
+                file.setExistsInER(0);
+            }
+        }
+    }
+
+    private void checkERConsistency() {
+        boolean inconsistent = false;
+        List<FileSignature> inconsistentList = new ArrayList<>();
+        for (FileSignature erSignature : erProcessor.getReferenceList()) {
+            DefaultListModel<CustomFile> listModel = fileListModelMap.get(PageSize.GENERAL);
+            boolean check = false;
+            for (int i = 0; i < listModel.getSize(); i++) {
+                FileSignature fileSignature = listModel.get(i).getSignature();
+                if (erSignature.equals(fileSignature)) {
+                    check = true;
+                    break;
+                }
+            }
+            if (!check) {
+                if (!inconsistent) inconsistent = true;
+                inconsistentList.add(erSignature);
+            }
+        }
+        if (inconsistent) {
+            System.err.println("===========");
+            System.err.println("WARNING!");
+            System.err.println("Drawings not found:");
+            inconsistentList.forEach(System.err::println);
+            System.err.println("===========");
+        }
+    }
+
     private void distributeDocuments() {
         for (int i = 0; i < fileListModelMap.get(PageSize.GENERAL).getSize(); i++) {
             CustomFile file = fileListModelMap.get(PageSize.GENERAL).get(i);
             if (file.getFileType().equals("application/pdf")) {
                 DefaultListModel<CustomFile> listModel = fileListModelMap.get(file.getPageSize());
                 if (!listModel.contains(file)) {
+                    listModel.addElement(file);
+                }
+                if (file.getPageSize() != PageSize.A4_BOM) {
+                    listModel = fileListModelMap.get(PageSize.ALL_SIZES);
                     listModel.addElement(file);
                 }
             }
@@ -128,7 +172,7 @@ class FileProcessor {
 
     private void setPageSizeComboBoxModel() {
         for (PageSize pageSize : PageSize.values()) {
-            if (!fileListModelMap.get(pageSize).isEmpty() && pageSize != PageSize.VARIOUS) {
+            if (!fileListModelMap.get(pageSize).isEmpty() && pageSize != PageSize.GENERAL && pageSize != PageSize.VARIOUS) {
                 if (pageSizeComboBoxModel.getIndexOf(pageSize) == -1) {
                     pageSizeComboBoxModel.addElement(pageSize);
                 }

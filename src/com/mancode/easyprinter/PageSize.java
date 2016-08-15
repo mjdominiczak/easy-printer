@@ -1,9 +1,12 @@
 package com.mancode.easyprinter;
 
 /**
- * Created by Manveru on 27.05.2016.
+ * Created by Michał Dominiczak
+ * on 27.05.2016
+ * e-mail: michal-dominiczak@o2.pl
+ * Copyright reserved
  */
-public enum PageSize {
+enum PageSize {
     A4_BOM ("A4-BOM"),
     A4 ("A4"),
     A3 ("A3"),
@@ -14,6 +17,7 @@ public enum PageSize {
     A0_2450 ("A0-2450"),
     A0_3291 ("A0-3291"),
     A0_4132 ("A0-4132"),
+    ALL_SIZES ("ALL SIZES"),
     GENERAL ("GENERAL"),
     VARIOUS ("VARIOUS");
 

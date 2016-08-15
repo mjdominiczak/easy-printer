@@ -73,6 +73,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 
         //Set components in mainListPanel
         mainList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
+        mainList.setCellRenderer(new ERHighlightingRenderer());
 
         //Set mainListPanel
         JScrollPane mainListPanel = new JScrollPane(mainList);
@@ -84,7 +85,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         Map<PageSize, JScrollPane> scrollPanesMap = new EnumMap<>(PageSize.class);
         mainList.setFont(font);
         for (PageSize pageSize : PageSize.values()) {
-            if (pageSize != PageSize.VARIOUS) {
+            if (pageSize != PageSize.GENERAL &&
+                    pageSize != PageSize.VARIOUS) {
                 JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(pageSize));
 //                JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
                 additionalListsMap.put(pageSize, thisList);
@@ -181,7 +183,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(() -> createAndShowGui());
+        SwingUtilities.invokeLater(EasyPrinter::createAndShowGui);
 
     }
 
@@ -212,7 +214,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 
         // Create and set up the JFrame
         JFrame frame = new JFrame("EasyPrinter");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JFrame.setDefaultLookAndFeelDecorated(true);
 
         // Create and set up the content pane
@@ -299,6 +301,26 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         if (e.getSource() == pageSizeComboBox) {
             CardLayout cl = (CardLayout)(additionalListsPanel.getLayout());
             cl.show(additionalListsPanel, e.getItem().toString());
+        }
+    }
+
+    private class ERHighlightingRenderer extends DefaultListCellRenderer {
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            CustomFile fileValue = (CustomFile) value;
+            setText(fileValue.toString());
+            if (!isSelected) {
+                if (fileValue.getExistsInER() == 1) {
+                    component.setBackground(new Color(140,255,140));
+                } else if (fileValue.getExistsInER() == 0) {
+                    component.setBackground(new Color(255,140,140));
+                } else {
+                    component.setBackground(new Color(255,190,90));
+                }
+            }
+            return component;
         }
     }
 }

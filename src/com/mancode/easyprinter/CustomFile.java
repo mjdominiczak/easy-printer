@@ -14,14 +14,14 @@ import java.util.regex.Pattern;
  * e-mail: michal-dominiczak@o2.pl
  * Copyright reserved
  */
-public class CustomFile extends File {
+class CustomFile extends File {
 
     private String fileInfo;
     private String fileType;
-    private int drawingNumber;
-    private int sheetNumber;
     private int pageCount;
+    private int existsInER;         // -1 if not checked, 0 if does not exist, 1 if exists
     private PageSize pageSize;
+    private FileSignature signature;
 
     CustomFile(String pathname) {
         super(pathname);
@@ -30,9 +30,10 @@ public class CustomFile extends File {
 
     void runChecks() {
         checkFileType();
-        checkDrawingNumber();
+        signature = new FileSignature(checkDrawingNumber(), "", checkBOM());
         checkProperties();
         createFileInfo();
+        existsInER = -1;
     }
 
     private void checkFileType() {
@@ -45,13 +46,17 @@ public class CustomFile extends File {
         }
     }
 
-    private void checkDrawingNumber() {
+    private int checkDrawingNumber() {
         String name = getName();
         Pattern pattern = Pattern.compile("500[0-9]{6}");
         Matcher matcher = pattern.matcher(name);
         if (matcher.lookingAt()) {
-            drawingNumber = Integer.parseInt(matcher.group());
-        }
+            return Integer.parseInt(matcher.group());
+        } else return 0;
+    }
+
+    private boolean checkBOM() {
+        return getName().contains("BOM");
     }
 
     private void checkProperties() {
@@ -72,6 +77,18 @@ public class CustomFile extends File {
 
     CustomFile(File parent, String child) {
         super(parent, child);
+    }
+
+    public FileSignature getSignature() {
+        return signature;
+    }
+
+    int getExistsInER() {
+        return existsInER;
+    }
+
+    void setExistsInER(int existsInER) {
+        this.existsInER = existsInER;
     }
 
     void printPDF() {
@@ -119,29 +136,7 @@ public class CustomFile extends File {
     }
 
     int getDrawingNumber() {
-        return drawingNumber;
+        return signature.getDrawingNumber();
     }
-
-//    /**
-//     * Comparator class for sorting list according to referenceList order
-//     */
-//    class ERComparator implements Comparator<CustomFile> {
-//
-//        @Override
-//        public int compare(CustomFile file1, CustomFile file2) {
-//            int index1 = referenceList.indexOf(file1.drawingNumber);
-//            int index2 = referenceList.indexOf(file2.drawingNumber);
-//            if (index1 == -1) {
-//                throw new IllegalArgumentException(file1.drawingNumber + " not found in ER!");
-//            } else if (index2 == -1) {
-//                throw new IllegalArgumentException(file2.drawingNumber + " not found in ER!");
-//            }
-//            int result = index1 - index2;
-//            if (result == 0) {
-//                return file1.compareTo(file2);
-//            }
-//            return result;
-//        }
-//    }
 
 }
