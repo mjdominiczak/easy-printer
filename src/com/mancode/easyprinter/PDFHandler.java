@@ -9,6 +9,7 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -20,23 +21,12 @@ import java.util.Collections;
  */
 class PDFHandler {
 
-//    private PDDocument pdDocument;
-//    private int pageCount;
-//    private String filename;
-//    private File parentFile;
-
-//    PDFHandler(File file) {
-//        parentFile = file;
-//        loadPDF(file);
-//        filename = file.getName();
-//    }
-
-    public static int getPageCount(File file) {
-        // load file
+    static PDFProperties getPropertiesSet(File file) {
         PDDocument pdDocument = loadPDF(file);
-        int pageCount = pdDocument.getNumberOfPages();
+        PageSize pageSize = getPageSize(pdDocument);
+        int pageCount = getPageCount(pdDocument);
         closePDF(pdDocument);
-        return pageCount;
+        return new PDFProperties(pageCount, pageSize);
     }
 
     private static PDDocument loadPDF(File file) {
@@ -49,23 +39,6 @@ class PDFHandler {
             System.err.println("IOException while trying to load file:" + file);
         }
         return pdDocument;
-    }
-
-    private static void closePDF(PDDocument pdDocument) {
-        try {
-            pdDocument.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("IOException while trying to close file:" + pdDocument.getDocumentInformation().getTitle());
-        }
-    }
-
-    public static PDFProperties getPropertiesSet(File file) {
-        PDDocument pdDocument = loadPDF(file);
-        PageSize pageSize = getPageSize(pdDocument);
-        int pageCount = getPageCount(pdDocument);
-        closePDF(pdDocument);
-        return new PDFProperties(pageCount, pageSize);
     }
 
     public static PageSize getPageSize(PDDocument pdDocument) {
@@ -82,8 +55,17 @@ class PDFHandler {
         return pageSize;
     }
 
-    public static int getPageCount(PDDocument pdDocument) {
+    private static int getPageCount(PDDocument pdDocument) {
         return pdDocument.getNumberOfPages();
+    }
+
+    private static void closePDF(PDDocument pdDocument) {
+        try {
+            pdDocument.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("IOException while trying to close file:" + pdDocument.getDocumentInformation().getTitle());
+        }
     }
 
     public static PageSize getPageSize(PDDocument pdDocument, int pageNumber) {
@@ -139,11 +121,11 @@ class PDFHandler {
         return Math.round(pt * 25.4f / 72);
     }
 
-    static ArrayList<CustomFile> splitDocument(CustomFile file) {
+    static ArrayList<CustomFile> splitDocument(CustomFile file, Path rootPath) {
         PDDocument pdDocument = loadPDF(file);
         ArrayList<CustomFile> singlePages = new ArrayList<>();
         for (int i = 0; i < file.getPageCount(); i++) {
-            File directory = new File(file.getParent() + "\\split");
+            File directory = new File(rootPath.toString() + "\\_Split");
             directory.mkdir();
             String filename = file.getName();
             String[] splittedFilename = filename.split("\\.");
@@ -181,7 +163,7 @@ class PDFHandler {
         return singlePages;
     }
 
-    public static void mergePDFs(File targetFile, DefaultListModel<CustomFile> listModel) {
+    static void mergePDFs(File targetFile, DefaultListModel<CustomFile> listModel) {
         PDFMergerUtility merger = new PDFMergerUtility();
         merger.setDestinationFileName(targetFile.getAbsolutePath());
         Collections.list(listModel.elements()).forEach(file -> {
@@ -198,46 +180,7 @@ class PDFHandler {
         }
     }
 
-//    public ArrayList<CustomFile> splitDocument() {
-//        ArrayList<CustomFile> singlePages = new ArrayList<>();
-//        for (int i = 0; i < pageCount; i++) {
-//            File directory = new File(parentFile.getParent() + "\\split");
-//            directory.mkdir();
-//            String[] splittedFilename = filename.split("\\.");
-//            String extension = "." + splittedFilename[splittedFilename.length - 1];
-//            String rawFilename = filename.substring(0, filename.lastIndexOf(extension));
-//            String newFilename = rawFilename + " page " + i + extension;
-//            CustomFile newFile = new CustomFile(directory, newFilename);
-//            boolean fileCreated = false;
-//            try {
-//                fileCreated = newFile.createNewFile();
-//            } catch (IOException e) {
-//                System.err.println("IOException while trying to create new file: " + newFilename);
-//                e.printStackTrace();
-//            }
-//            if (fileCreated) {
-//                PDDocument singlePageDocument = new PDDocument();
-//                singlePageDocument.addPage(pdDocument.getPage(i));
-//                try {
-//                    singlePageDocument.save(newFile);
-//                    newFile.runChecks();
-//                } catch (IOException e) {
-//                    System.err.println("IOException while saving new file: " + newFilename);
-//                    e.printStackTrace();
-//                }
-//                try {
-//                    singlePageDocument.close();
-//                } catch (IOException e) {
-//                    System.err.println("IOException while closing document: " + singlePageDocument.toString());
-//                    e.printStackTrace();
-//                }
-//                singlePages.add(newFile);
-//            }
-//        }
-//        return singlePages;
-//    }
-
-    public static void printPDF(File file) throws PrinterException {
+    static void printPDF(File file) throws PrinterException {
         PDDocument pdDocument = null;
         try {
             pdDocument = PDDocument.load(file);
@@ -255,7 +198,7 @@ class PDFHandler {
         }
     }
 
-    public static class PDFProperties {
+    static class PDFProperties {
         private int pageCount;
         private PageSize pageSize;
 

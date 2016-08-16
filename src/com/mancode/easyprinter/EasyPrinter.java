@@ -27,6 +27,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
     private JButton openERButton;
     private JButton printButton;
     private JButton mergeButton;
+    private JButton mergeAllButton;
     private JProgressBar progressBar;
     private JTextField pathTextField;
     private JComboBox pageSizeComboBox;
@@ -128,15 +129,20 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         printButton.setActionCommand("print");
         printButton.addActionListener(this);
 
-        mergeButton = new JButton("Merge list");
+        mergeButton = new JButton("Merge this list");
         mergeButton.setActionCommand("merge");
         mergeButton.addActionListener(this);
+
+        mergeAllButton = new JButton("Merge all lists");
+        mergeAllButton.setActionCommand("mergeAll");
+        mergeAllButton.addActionListener(this);
 
         //Set buttonsPanel
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.add(openERButton);
-        buttonsPanel.add(printButton);
+//        buttonsPanel.add(printButton);
         buttonsPanel.add(mergeButton);
+        buttonsPanel.add(mergeAllButton);
         buttonsPanel.add(clearButton);
 
         //Define constraints for top level panels and add them to the main layout
@@ -237,6 +243,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             print();
         } else if (e.getActionCommand().equals("merge")) {
             merge();
+        } else if (e.getActionCommand().equals("mergeAll")) {
+            mergeAll();
         } else if (e.getActionCommand().equals("clear")) {
             clear();
         }
@@ -285,6 +293,21 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }
+
+    private void mergeAll() {
+        File directory = new File(fileProcessor.getRootPath().toString() + "\\_Merged pdfs");
+        boolean created = directory.mkdir();
+        if (created || directory.exists()) {
+            JOptionPane.showMessageDialog(this, "Merged files will be created at:\n" + directory.getPath());
+            if (directory.isDirectory() && directory.listFiles().length > 0)
+                JOptionPane.showMessageDialog(this, "Existing files will be overwritten!");
+            for (int i = 0; i < pageSizeComboBox.getModel().getSize(); i++) {
+                String filename = "all " + pageSizeComboBox.getModel().getElementAt(i).toString() + ".pdf";
+                CustomFile newFile = new CustomFile(directory, filename);
+                fileProcessor.mergeList(newFile, (PageSize)pageSizeComboBox.getModel().getElementAt(i));
             }
         }
     }

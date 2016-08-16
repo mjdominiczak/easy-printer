@@ -19,8 +19,8 @@ class FileProcessor {
     private Map<PageSize, DefaultListModel<CustomFile>> fileListModelMap;
     private DefaultComboBoxModel<PageSize> pageSizeComboBoxModel;
     private JProgressBar progressBar;
-
     private ERProcessor erProcessor;
+    private Path rootPath;
 
     /**
      * Initializes fields with default, empty constructors,
@@ -45,12 +45,16 @@ class FileProcessor {
             for (File file : directory.listFiles()) {
                 if (file.isFile()) {
                     count++;
-                } else if (file.isDirectory()) {
+                } else if (file.isDirectory() && !file.toPath().endsWith("_Merged pdfs") && !file.toPath().endsWith("_Split")) {
                     count += countFilesInDirectory(file);
                 }
             }
         }
         return count;
+    }
+
+    Path getRootPath() {
+        return rootPath;
     }
 
     void clear() {
@@ -59,6 +63,7 @@ class FileProcessor {
     }
     
     void addFilesFromDirectory(Path path) {
+        rootPath = path;
         FileProcessorWorker worker = new FileProcessorWorker(path);
         worker.addPropertyChangeListener(evt -> {
             if (evt.getPropertyName().equals("progress")) {
@@ -113,13 +118,24 @@ class FileProcessor {
     }
 
     private void updateExistsInER() {
+        boolean inconsistent = false;
+        List<FileSignature> inconsistentList = new ArrayList<>();
         for (int i = 0; i < fileListModelMap.get(PageSize.GENERAL).getSize(); i++) {
             CustomFile file = fileListModelMap.get(PageSize.GENERAL).get(i);
             if (erProcessor.getReferenceList().contains(file.getSignature())) {
                 file.setExistsInER(1);
             } else {
                 file.setExistsInER(0);
+                inconsistentList.add(file.getSignature());
+                if (!inconsistent) inconsistent = true;
             }
+        }
+        if (inconsistent) {
+//            Collections.sort(inconsistentList);
+            System.err.println("---WARNING!---");
+            System.err.println("Drawings/BOMs not found in ER:");
+            inconsistentList.forEach(System.err::println);
+            System.err.println("===========");
         }
     }
 
@@ -142,9 +158,9 @@ class FileProcessor {
             }
         }
         if (inconsistent) {
-            System.err.println("===========");
-            System.err.println("WARNING!");
-            System.err.println("Drawings not found:");
+            Collections.sort(inconsistentList);
+            System.err.println("---WARNING!---");
+            System.err.println("Drawings/BOMs not found in specified directory:");
             inconsistentList.forEach(System.err::println);
             System.err.println("===========");
         }
@@ -218,6 +234,7 @@ class FileProcessor {
             Files.walkFileTree(path, EnumSet.noneOf(FileVisitOption.class), maxDepth, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    if (file.getParent().endsWith("_Merged pdfs") || file.getParent().endsWith("_Split")) return super.visitFile(file, attrs);
                     incrementCounter();
                     CustomFile customFile = new CustomFile(file.toString());
                     DefaultListModel<CustomFile> listModel = fileListModelMap.get(PageSize.GENERAL);
@@ -225,7 +242,7 @@ class FileProcessor {
                             customFile.getName().toLowerCase().endsWith(".pdf")) {
                         if (customFile.getPageSize() == PageSize.VARIOUS) {
                             progressBar.setIndeterminate(true);
-                            PDFHandler.splitDocument(customFile).forEach(listModel::addElement);
+                            PDFHandler.splitDocument(customFile, rootPath).forEach(listModel::addElement);
                             progressBar.setIndeterminate(false);
                         } else {
                             listModel.addElement(customFile);

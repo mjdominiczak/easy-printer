@@ -156,7 +156,7 @@ class ERProcessor {
                             }
                         }
                     }
-                    System.out.println("===========");
+                    System.err.println("---INFORMATION---");
                     System.out.println("Reference list from ER:");
                     referenceList.forEach(System.out::println);
                     System.out.println("===========");
@@ -197,10 +197,8 @@ class ERProcessor {
             if ((index1 == -1 && index2 == -1) || index1 == index2) {
                 return file1.compareTo(file2);
             } else if (index1 == -1) {
-                System.err.println(file1.getName() + " not found in ER!");
                 return 1;
             } else if (index2 == -1) {
-                System.err.println(file2.getName() + " not found in ER!");
                 return -1;
             } else {
                 return index1 - index2;
