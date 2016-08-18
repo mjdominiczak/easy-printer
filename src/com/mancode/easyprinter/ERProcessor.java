@@ -91,7 +91,13 @@ class ERProcessor {
                                         descriptionColNo = cell.getColumnIndex();
                                     if (bomColNo < 0 && checkStringValue(cell, "BOM"))
                                         bomColNo = cell.getColumnIndex();
-                                    if (yellowColNo < 0 && checkFillColor(cell, "FFFFFF00"))
+
+                                    //finds the first YELLOW cell
+//                                    if (yellowColNo < 0 && checkFillColor(cell, "FFFFFF00"))
+                                    //finds the first FILLED and NOT WHITE cell
+                                    if (yellowColNo < 0
+                                            && cell.getCellStyle().getFillForegroundColorColor() != null
+                                            && !checkFillColor(cell, "FFFFFFFF"))
                                         yellowColNo = cell.getColumnIndex();
                                 } else {
                                     break searchLoop;
@@ -105,12 +111,13 @@ class ERProcessor {
                     }
                     for (int i = headerRowNo + 1; i < sheet.getLastRowNum(); i++) {
                         Row row = sheet.getRow(i);
+                        if (row == null) continue;
                         Cell checkCell = row.getCell(yellowColNo);
                         Cell descriptionCell = row.getCell(descriptionColNo);
                         Cell bomCell = row.getCell(bomColNo);
                         boolean transferToReferenceList = false;
                         boolean hasBOM = false;
-                        if (checkCell != null) {
+                        if (checkCell != null && descriptionCell != null && bomCell != null) {
                             switch (checkCell.getCellType()) {
                                 case Cell.CELL_TYPE_STRING:
                                     if (checkCell.getStringCellValue().toLowerCase().trim().equals("x")) {

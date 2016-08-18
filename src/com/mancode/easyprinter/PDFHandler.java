@@ -21,6 +21,8 @@ import java.util.Collections;
  */
 class PDFHandler {
 
+    private static final int sizeTolerance = 2;
+
     static PDFProperties getPropertiesSet(File file) {
         PDDocument pdDocument = loadPDF(file);
         PageSize pageSize = getPageSize(pdDocument);
@@ -91,29 +93,28 @@ class PDFHandler {
         }
 
         // check page format (dimensions in mm)
-        if (minDim == 210 && maxDim == 297) {
+        if (Math.abs(minDim - 210) < sizeTolerance && Math.abs(maxDim - 297) < sizeTolerance) {
             return PageSize.A4;
-        } else if (minDim == 210 && maxDim == 279) {
+        } else if (Math.abs(minDim - 210) < sizeTolerance && Math.abs(maxDim - 279) < sizeTolerance) {
             return PageSize.A4_BOM;
-        } else if (minDim == 297 && maxDim == 420) {
+        } else if (Math.abs(minDim - 297) < sizeTolerance && Math.abs(maxDim - 420) < sizeTolerance) {
             return PageSize.A3;
-        } else if (minDim == 420 && maxDim == 594) {
+        } else if (Math.abs(minDim - 420) < sizeTolerance && Math.abs(maxDim - 594) < sizeTolerance) {
             return PageSize.A2;
-        } else if (minDim == 594 && maxDim == 841) {
+        } else if (Math.abs(minDim - 594) < sizeTolerance && Math.abs(maxDim - 841) < sizeTolerance) {
             return PageSize.A1;
-        } else if (minDim == 841 && maxDim == 1189) {
+        } else if (Math.abs(minDim - 841) < sizeTolerance && Math.abs(maxDim - 1189) < sizeTolerance) {
             return PageSize.A0;
-        } else if (minDim == 841 && maxDim == 1609) {
+        } else if (Math.abs(minDim - 841) < sizeTolerance && Math.abs(maxDim - 1609) < sizeTolerance) {
             return PageSize.A0_1609;
-        } else if (minDim == 841 && maxDim == 2450) {
+        } else if (Math.abs(minDim - 841) < sizeTolerance && Math.abs(maxDim - 2450) < sizeTolerance) {
             return PageSize.A0_2450;
-        } else if (minDim == 841 && maxDim == 3291) {
+        } else if (Math.abs(minDim - 841) < sizeTolerance && Math.abs(maxDim - 3291) < sizeTolerance) {
             return PageSize.A0_3291;
-        } else if (minDim == 841 && maxDim == 4132) {
+        } else if (Math.abs(minDim - 841) < sizeTolerance && Math.abs(maxDim - 4132) < sizeTolerance) {
             return PageSize.A0_4132;
-        } else {
+        } else
             return PageSize.GENERAL;
-        }
     }
 
     // convert default dimensions units (points) to mm: 1 point equals to 1/72 inch
@@ -202,12 +203,12 @@ class PDFHandler {
         private int pageCount;
         private PageSize pageSize;
 
-        public PDFProperties(int pageCount, PageSize pageSize) {
+        PDFProperties(int pageCount, PageSize pageSize) {
             this.pageCount = pageCount;
             this.pageSize = pageSize;
         }
 
-        public int getPageCount() {
+        int getPageCount() {
             return pageCount;
         }
 
