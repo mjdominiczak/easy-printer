@@ -1,21 +1,17 @@
 package com.mancode.easyprinter;
 
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.extractor.ExcelExtractor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,11 +48,11 @@ class ERProcessor {
      */
     private void extractOrderFromER(int variant) {
         try {
-            OPCPackage pkg = OPCPackage.open(engineeringReleaseFile);
-            XSSFWorkbook wb = new XSSFWorkbook(pkg);
             referenceList = new ArrayList<>();
             switch (variant) {
                 case 0:
+                    OPCPackage pkg = OPCPackage.open(engineeringReleaseFile);
+                    XSSFWorkbook wb = new XSSFWorkbook(pkg);
                     ExcelExtractor extractor = new XSSFExcelExtractor(wb);
                     Scanner scanner = new Scanner(extractor.getText());
                     scanner.next();
@@ -67,10 +63,13 @@ class ERProcessor {
                             referenceList.add(tmp);
                         }
                     }
+                    pkg.close();
                     break;
 
                 case 1:
-                    XSSFSheet sheet = wb.getSheetAt(0);
+                    Workbook workbook = WorkbookFactory.create(engineeringReleaseFile);
+                    boolean isXLSX = workbook instanceof XSSFWorkbook;
+                    Sheet sheet = workbook.getSheetAt(0);
                     int headerRowNo = -1;
                     int drawingColNo = -1;
                     int bomColNo = -1;
@@ -97,7 +96,7 @@ class ERProcessor {
                                     //finds the first FILLED and NOT WHITE cell
                                     if (yellowColNo < 0
                                             && cell.getCellStyle().getFillForegroundColorColor() != null
-                                            && !checkFillColor(cell, "FFFFFFFF"))
+                                            && checkFillColor(cell, new short[]{255, 255, 0}, isXLSX))
                                         yellowColNo = cell.getColumnIndex();
                                 } else {
                                     break searchLoop;
@@ -169,7 +168,6 @@ class ERProcessor {
                     System.out.println("===========");
                     break;
             }
-            pkg.close();
         } catch (InvalidFormatException e) {
             e.printStackTrace();
             System.err.println("InvalidFormatException when trying to load ER file: " + engineeringReleaseFile.getPath());
@@ -183,9 +181,21 @@ class ERProcessor {
         return cell.getCellType() == Cell.CELL_TYPE_STRING && cell.getStringCellValue().contains(text);
     }
 
-    private boolean checkFillColor(Cell cell, String argbHexColor) {
-        XSSFColor color = XSSFColor.toXSSFColor(cell.getCellStyle().getFillForegroundColorColor());
-        return color != null && color.getARGBHex().equals(argbHexColor);
+    private boolean checkFillColor(Cell cell, short[] rgbColor, boolean isXLSX) {
+        short[] rgb;
+        if (isXLSX) {
+            XSSFColor color = XSSFColor.toXSSFColor(cell.getCellStyle().getFillForegroundColorColor());
+            if (color == null) return false;
+            rgb = new short[3];
+            for (int i = 0; i < color.getRGB().length; i++) {
+                rgb[i] = (short)(color.getRGB()[i] & 0xFF);
+            }
+        } else {
+            HSSFColor color = HSSFColor.toHSSFColor(cell.getCellStyle().getFillForegroundColorColor());
+            if (color == null) return false;
+            rgb = color.getTriplet();
+        }
+        return Arrays.equals(rgb, rgbColor);
     }
 
     List<FileSignature> getReferenceList() {

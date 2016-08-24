@@ -85,13 +85,14 @@ class FileProcessor {
      * @throws Exception Throws an exception when ER file is in format other than .xlsx
      */
     void addER(File engineeringRelease) throws Exception {
-        if (engineeringRelease.getName().endsWith(".xlsx")) {
+        String name = engineeringRelease.getName();
+        if (name.endsWith(".xls") || name.endsWith(".xlsx")) {
             erProcessor = new ERProcessor(engineeringRelease);
             sortListModels(SortType.REFERENCE_LIST);
             updateExistsInER();
             checkERConsistency();
         } else {
-            throw new Exception("ER file must be in .xlsx format");
+            throw new Exception("ER file must be an Excel file!");
         }
     }
 

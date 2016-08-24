@@ -117,8 +117,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         progressPanel.add(progressBar, BorderLayout.CENTER);
 
         //Set components in buttonsPanel
-        openERButton = new JButton("Open ER (.xlsx)");
-        openERButton.setActionCommand("openER");
+        openERButton = new JButton("Load ER");
+        openERButton.setActionCommand("loadER");
         openERButton.addActionListener(this);
 
         clearButton = new JButton("Clear");
@@ -237,8 +237,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("open")) {
             openDirectory();
-        } else if (e.getActionCommand().equals("openER")) {
-            openER();
+        } else if (e.getActionCommand().equals("loadER")) {
+            loadER();
         } else if (e.getActionCommand().equals("print")) {
             print();
         } else if (e.getActionCommand().equals("merge")) {
@@ -261,7 +261,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         }
     }
 
-    private void openER() {
+    private void loadER() {
         final JFileChooser openFileChooser = new JFileChooser();
         openFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnValue = openFileChooser.showOpenDialog(this);
