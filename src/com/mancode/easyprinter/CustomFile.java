@@ -48,11 +48,18 @@ class CustomFile extends File {
 
     private int checkDrawingNumber() {
         String name = getName();
-        Pattern pattern = Pattern.compile("500[0-9]{6}");
+        Pattern pattern = Pattern.compile("[1-9][0-9]{8}");
         Matcher matcher = pattern.matcher(name);
         if (matcher.lookingAt()) {
             return Integer.parseInt(matcher.group());
-        } else return 0;
+        } else {
+            pattern = Pattern.compile("([0-9]{2})k([0-9]*).*");
+            matcher = pattern.matcher(name.toLowerCase());
+            if (matcher.lookingAt()) {
+                String convertedString = matcher.group(1) + "0" + matcher.group(2);
+                return Integer.parseInt(convertedString);
+            } else return 0;
+        }
     }
 
     private boolean checkBOM() {

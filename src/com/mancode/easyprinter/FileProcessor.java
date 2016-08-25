@@ -82,9 +82,9 @@ class FileProcessor {
      * Method for adding ER file and reading a drawings reference order from it.
      *
      * @param engineeringRelease Engineering Release file
-     * @throws Exception Throws an exception when ER file is in format other than .xlsx
+     * @throws IOException Throws an exception when ER file is in format other than .xlsx
      */
-    void addER(File engineeringRelease) throws Exception {
+    void addER(File engineeringRelease) throws IOException {
         String name = engineeringRelease.getName();
         if (name.endsWith(".xls") || name.endsWith(".xlsx")) {
             erProcessor = new ERProcessor(engineeringRelease);
@@ -92,7 +92,7 @@ class FileProcessor {
             updateExistsInER();
             checkERConsistency();
         } else {
-            throw new Exception("ER file must be an Excel file!");
+            throw new IOException("ER file must be an Excel file!");
         }
     }
 

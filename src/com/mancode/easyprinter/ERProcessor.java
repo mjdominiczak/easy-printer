@@ -145,7 +145,20 @@ class ERProcessor {
                             int drawingNo = 0;
                             switch (numberCell.getCellType()) {
                                 case Cell.CELL_TYPE_STRING:
-                                    drawingNo = Integer.parseInt(numberCell.getStringCellValue());
+                                    String stringValue = numberCell.getStringCellValue();
+                                    try {
+                                        drawingNo = Integer.parseInt(stringValue);
+                                    } catch (NumberFormatException e) {
+                                        Pattern pattern = Pattern.compile("([0-9]{2})k([0-9]*).*");
+                                        Matcher matcher = pattern.matcher(stringValue.trim().toLowerCase());
+                                        if (matcher.lookingAt()) {
+                                            String convertedString = matcher.group(1) + "0" + matcher.group(2);
+                                            drawingNo = Integer.parseInt(convertedString);
+                                        } else {
+                                            System.err.println("Cannot parse drawing number from the cell " + numberCell.getAddress().toString());
+                                            e.printStackTrace();
+                                        }
+                                    }
                                     break;
                                 case Cell.CELL_TYPE_NUMERIC:
                                     drawingNo = (int) numberCell.getNumericCellValue();

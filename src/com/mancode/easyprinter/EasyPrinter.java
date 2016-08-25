@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.EnumMap;
@@ -269,7 +270,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             File file = openFileChooser.getSelectedFile();
             try {
                 fileProcessor.addER(file);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
