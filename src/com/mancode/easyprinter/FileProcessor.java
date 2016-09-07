@@ -53,6 +53,10 @@ class FileProcessor {
         return count;
     }
 
+    String getLogInfo() {
+        return "\tNumber of files: " + fileListModelMap.get(PageSize.GENERAL).getSize() + "\tPath: " + getRootPath().toString();
+    }
+
     Path getRootPath() {
         return rootPath;
     }

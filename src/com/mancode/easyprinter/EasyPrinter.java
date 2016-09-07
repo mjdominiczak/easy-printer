@@ -12,6 +12,9 @@ import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Created by Michal Dominiczak
@@ -19,6 +22,8 @@ import java.util.Map;
  * Copyright reserved
  */
 public class EasyPrinter extends JPanel implements ActionListener, ItemListener {
+
+    private static Logger logger = Logger.getLogger(FileProcessor.class.getName());
 
     private final Insets defaultInsets = new Insets(5, 5, 5, 5);
     private final JPanel additionalListsPanel;
@@ -37,6 +42,26 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 
     public EasyPrinter() {
         super(new GridBagLayout());
+
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "[%1$tF %1$tT] %5$s%n");
+
+        try {
+            FileHandler fileHandler;
+            String logPath = "N:\\Public\\Dominiczak\\EasyPrinter";
+            File nFile = new File(logPath);
+            if (nFile.exists()) {
+                fileHandler = new FileHandler(logPath + "\\log.txt", true);
+            } else {
+                fileHandler = new FileHandler(System.getProperty("user.dir") + "\\log.txt", true);
+            }
+            SimpleFormatter formatter = new SimpleFormatter();
+            fileHandler.setFormatter(formatter);
+            logger.addHandler(fileHandler);
+            logger.setUseParentHandlers(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
         Font font = new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize);
@@ -311,6 +336,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
                 fileProcessor.mergeList(newFile, (PageSize)pageSizeComboBox.getModel().getElementAt(i));
             }
         }
+        logger.info(fileProcessor.getLogInfo());
     }
 
     private void clear() {
