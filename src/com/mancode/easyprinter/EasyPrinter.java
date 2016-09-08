@@ -48,12 +48,12 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 
         try {
             FileHandler fileHandler;
-            String logPath = "N:\\Public\\Dominiczak\\EasyPrinter";
+            String logPath = "N:\\Public\\Dominiczak\\EasyPrinter\\Logs";
             File nFile = new File(logPath);
             if (nFile.exists()) {
-                fileHandler = new FileHandler(logPath + "\\log.txt", true);
+                fileHandler = new FileHandler(logPath + "\\log%u.txt", true);
             } else {
-                fileHandler = new FileHandler(System.getProperty("user.dir") + "\\log.txt", true);
+                fileHandler = new FileHandler(System.getProperty("user.dir") + "\\log%u.txt", true);
             }
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);
@@ -285,6 +285,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             pathTextField.setText(path.toString());
             fileProcessor.addFilesFromDirectory(path);
         }
+        logger.info("\tUser: " + System.getProperty("user.name") + "\topen");
     }
 
     private void loadER() {
@@ -300,6 +301,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }
+        logger.info("\tUser: " + System.getProperty("user.name") + "\tloadER");
     }
 
     private void print() {
@@ -318,9 +320,9 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
                 fileProcessor.mergeList(file, (PageSize)pageSizeComboBox.getSelectedItem());
             } catch (Exception e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }
+        logger.info("\tUser: " + System.getProperty("user.name") + "\tmerge");
     }
 
     private void mergeAll() {
@@ -344,6 +346,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         console.setText("");
         fileProcessor.clear();
         openFolderButton.requestFocus();
+        logger.info("\tUser: " + System.getProperty("user.name") + "\tclear");
     }
 
     @Override

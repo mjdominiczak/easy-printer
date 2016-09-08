@@ -54,7 +54,10 @@ class FileProcessor {
     }
 
     String getLogInfo() {
-        return "\tNumber of files: " + fileListModelMap.get(PageSize.GENERAL).getSize() + "\tPath: " + getRootPath().toString();
+        return  "\tUser: " + System.getProperty("user.name") +
+                "\tmergeAll" +
+                "\tNumber of files: " + fileListModelMap.get(PageSize.GENERAL).getSize() +
+                "\tPath: " + getRootPath().toString();
     }
 
     Path getRootPath() {
