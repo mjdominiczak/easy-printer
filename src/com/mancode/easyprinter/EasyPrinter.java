@@ -30,7 +30,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
     private final JList<CustomFile> mainList;
     private JButton openFolderButton;
     private JButton clearButton;
-    private JButton openERButton;
+    private JButton loadERButton;
+    private JButton loadRawListButton;
     private JButton printButton;
     private JButton mergeButton;
     private JButton mergeAllButton;
@@ -143,9 +144,13 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         progressPanel.add(progressBar, BorderLayout.CENTER);
 
         //Set components in buttonsPanel
-        openERButton = new JButton("Load ER");
-        openERButton.setActionCommand("loadER");
-        openERButton.addActionListener(this);
+        loadERButton = new JButton("Load ER");
+        loadERButton.setActionCommand("loadER");
+        loadERButton.addActionListener(this);
+
+        loadRawListButton = new JButton("Load raw list");
+        loadRawListButton.setActionCommand("loadRaw");
+        loadRawListButton.addActionListener(this);
 
         clearButton = new JButton("Clear");
         clearButton.setActionCommand("clear");
@@ -165,7 +170,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 
         //Set buttonsPanel
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.add(openERButton);
+        buttonsPanel.add(loadERButton);
+        buttonsPanel.add(loadRawListButton);
 //        buttonsPanel.add(printButton);
         buttonsPanel.add(mergeButton);
         buttonsPanel.add(mergeAllButton);
@@ -265,6 +271,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             openDirectory();
         } else if (e.getActionCommand().equals("loadER")) {
             loadER();
+        } else if (e.getActionCommand().equals("loadRaw")) {
+            loadRaw();
         } else if (e.getActionCommand().equals("print")) {
             print();
         } else if (e.getActionCommand().equals("merge")) {
@@ -302,6 +310,22 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             }
         }
         logger.info("\tUser: " + System.getProperty("user.name") + "\tloadER");
+    }
+
+    private void loadRaw() {
+        final JFileChooser openFileChooser = new JFileChooser();
+        openFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int returnValue = openFileChooser.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = openFileChooser.getSelectedFile();
+            try {
+                fileProcessor.addRaw(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+        logger.info("\tUser: " + System.getProperty("user.name") + "\tloadRaw");
     }
 
     private void print() {

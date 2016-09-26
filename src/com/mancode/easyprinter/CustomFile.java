@@ -2,6 +2,7 @@ package com.mancode.easyprinter;
 
 import org.apache.tika.Tika;
 
+import javax.swing.*;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +32,11 @@ class CustomFile extends File {
     void runChecks() {
         checkFileType();
         signature = new FileSignature(checkDrawingNumber(), "", checkBOM());
-        checkProperties();
-        createFileInfo();
-        existsInER = -1;
+        if (fileType != null) {
+            checkProperties();
+            createFileInfo();
+            existsInER = -1;
+        }
     }
 
     private void checkFileType() {
@@ -41,8 +44,7 @@ class CustomFile extends File {
         try {
             fileType = tika.detect(this);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("IOException while trying to detect file type");
+            JOptionPane.showMessageDialog(null , "File cannot be accessed:\n" + this.toString(), "IO Exception", JOptionPane.WARNING_MESSAGE);
         }
     }
 

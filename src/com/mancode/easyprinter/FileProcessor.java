@@ -94,7 +94,7 @@ class FileProcessor {
     void addER(File engineeringRelease) throws IOException {
         String name = engineeringRelease.getName();
         if (name.endsWith(".xls") || name.endsWith(".xlsx")) {
-            erProcessor = new ERProcessor(engineeringRelease);
+            erProcessor = new ERProcessor(engineeringRelease, 1);
             sortListModels(SortType.REFERENCE_LIST);
             updateExistsInER();
             checkERConsistency();
@@ -171,6 +171,18 @@ class FileProcessor {
             System.err.println("Drawings/BOMs not found in specified directory:");
             inconsistentList.forEach(System.err::println);
             System.err.println("===========");
+        }
+    }
+
+    void addRaw(File rawSheet) throws IOException {
+        String name = rawSheet.getName();
+        if (name.endsWith(".xls") || name.endsWith(".xlsx")) {
+            erProcessor = new ERProcessor(rawSheet, 0);
+            sortListModels(SortType.REFERENCE_LIST);
+            updateExistsInER();
+            checkERConsistency();
+        } else {
+            throw new IOException("Raw file must be an Excel file!");
         }
     }
 

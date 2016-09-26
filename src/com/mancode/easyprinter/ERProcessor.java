@@ -1,13 +1,14 @@
 package com.mancode.easyprinter;
 
+import org.apache.poi.POITextExtractor;
+import org.apache.poi.extractor.ExtractorFactory;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.extractor.ExcelExtractor;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.XmlException;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,12 +32,11 @@ class ERProcessor {
      * - duplicates removed (unique drawings)
      * - contains only drawing numbers (500xxxxxx)
      */
-//    private List<Integer> referenceList;
     private List<FileSignature> referenceList;
 
-    ERProcessor(File engineeringReleaseFile) {
+    ERProcessor(File engineeringReleaseFile, int variant) {
         this.engineeringReleaseFile = engineeringReleaseFile;
-        extractOrderFromER(1);
+        extractOrderFromER(variant);
     }
 
     /**
@@ -51,9 +51,7 @@ class ERProcessor {
             referenceList = new ArrayList<>();
             switch (variant) {
                 case 0:
-                    OPCPackage pkg = OPCPackage.open(engineeringReleaseFile);
-                    XSSFWorkbook wb = new XSSFWorkbook(pkg);
-                    ExcelExtractor extractor = new XSSFExcelExtractor(wb);
+                    POITextExtractor extractor = ExtractorFactory.createExtractor(engineeringReleaseFile);
                     Scanner scanner = new Scanner(extractor.getText());
                     scanner.next();
                     while (scanner.hasNext()) {
@@ -63,7 +61,6 @@ class ERProcessor {
                             referenceList.add(tmp);
                         }
                     }
-                    pkg.close();
                     break;
 
                 case 1:
@@ -94,9 +91,11 @@ class ERProcessor {
                                     //finds the first YELLOW cell
 //                                    if (yellowColNo < 0 && checkFillColor(cell, "FFFFFF00"))
                                     //finds the first FILLED and NOT WHITE cell
+                                    Color color = cell.getCellStyle().getFillForegroundColorColor();
                                     if (yellowColNo < 0
-                                            && cell.getCellStyle().getFillForegroundColorColor() != null
-                                            && checkFillColor(cell, new short[]{255, 255, 0}, isXLSX))
+                                            && (isXLSX ? color != null : !(HSSFColor.toHSSFColor(color) instanceof HSSFColor.AUTOMATIC))
+                                            && color != null
+                                            && !checkFillColor(cell, new short[]{255, 255, 255}, isXLSX))
                                         yellowColNo = cell.getColumnIndex();
                                 } else {
                                     break searchLoop;
@@ -145,7 +144,7 @@ class ERProcessor {
                             int drawingNo = 0;
                             switch (numberCell.getCellType()) {
                                 case Cell.CELL_TYPE_STRING:
-                                    String stringValue = numberCell.getStringCellValue();
+                                    String stringValue = numberCell.getStringCellValue().trim();
                                     try {
                                         drawingNo = Integer.parseInt(stringValue);
                                     } catch (NumberFormatException e) {
@@ -187,6 +186,12 @@ class ERProcessor {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("IOException when opening workbook from file: " + engineeringReleaseFile.getPath());
+        } catch (XmlException e) {
+            e.printStackTrace();
+            System.err.println("XmlException when creating extractor from file: " + engineeringReleaseFile.getPath());
+        } catch (OpenXML4JException e) {
+            e.printStackTrace();
+            System.err.println("OpenXML4JException when creating extractor from file: " + engineeringReleaseFile.getPath());
         }
     }
 
