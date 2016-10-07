@@ -31,7 +31,8 @@ class CustomFile extends File {
 
     void runChecks() {
         checkFileType();
-        signature = new FileSignature(checkDrawingNumber(), "", checkBOM());
+//        signature = new FileSignature(checkDrawingNumber(), "", checkBOM());
+        signature = createSignature();
         if (fileType != null) {
             checkProperties();
             createFileInfo();
@@ -48,24 +49,28 @@ class CustomFile extends File {
         }
     }
 
-    private int checkDrawingNumber() {
+    private FileSignature createSignature() {
+        int drwNo = 0;
+        int sheetNo = 0;
         String name = getName();
         Pattern pattern = Pattern.compile("[1-9][0-9]{8}");
         Matcher matcher = pattern.matcher(name);
         if (matcher.lookingAt()) {
-            return Integer.parseInt(matcher.group());
+            drwNo = Integer.parseInt(matcher.group());
         } else {
             pattern = Pattern.compile("([0-9]{2})k([0-9]*).*");
             matcher = pattern.matcher(name.toLowerCase());
             if (matcher.lookingAt()) {
                 String convertedString = matcher.group(1) + "0" + matcher.group(2);
-                return Integer.parseInt(convertedString);
-            } else return 0;
+                drwNo = Integer.parseInt(convertedString);
+            }
         }
-    }
-
-    private boolean checkBOM() {
-        return getName().contains("BOM");
+        pattern = Pattern.compile(".*(p[0-9]{2})");
+        matcher = pattern.matcher(name);
+        if (matcher.lookingAt()) {
+            sheetNo = Integer.parseInt(matcher.group(1).substring(1));
+        }
+        return new FileSignature(drwNo, sheetNo, "", checkBOM());
     }
 
     private void checkProperties() {
@@ -84,8 +89,37 @@ class CustomFile extends File {
         }
     }
 
+    private boolean checkBOM() {
+        return getName().contains("BOM");
+    }
+
     CustomFile(File parent, String child) {
         super(parent, child);
+        runChecks();
+    }
+
+    CustomFile(File parent, String child, int sheet) {
+        super(parent, child);
+//        runChecks();
+        signature = createSignature();
+        signature.setSheet(sheet);
+    }
+
+    private int checkDrawingNumber() {
+        // TODO rozpoznać numer arkusza
+        String name = getName();
+        Pattern pattern = Pattern.compile("[1-9][0-9]{8}");
+        Matcher matcher = pattern.matcher(name);
+        if (matcher.lookingAt()) {
+            return Integer.parseInt(matcher.group());
+        } else {
+            pattern = Pattern.compile("([0-9]{2})k([0-9]*).*");
+            matcher = pattern.matcher(name.toLowerCase());
+            if (matcher.lookingAt()) {
+                String convertedString = matcher.group(1) + "0" + matcher.group(2);
+                return Integer.parseInt(convertedString);
+            } else return 0;
+        }
     }
 
     public FileSignature getSignature() {

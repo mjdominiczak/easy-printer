@@ -227,8 +227,12 @@ class ERProcessor {
 
         @Override
         public int compare(CustomFile file1, CustomFile file2) {
-            int index1 = referenceList.indexOf(file1.getSignature());
-            int index2 = referenceList.indexOf(file2.getSignature());
+            FileSignature fs1 = new FileSignature(file1.getSignature());
+            FileSignature fs2 = new FileSignature(file2.getSignature());
+            fs1.resetSheet();
+            fs2.resetSheet();
+            int index1 = referenceList.indexOf(fs1);
+            int index2 = referenceList.indexOf(fs2);
             if ((index1 == -1 && index2 == -1) || index1 == index2) {
                 return file1.compareTo(file2);
             } else if (index1 == -1) {

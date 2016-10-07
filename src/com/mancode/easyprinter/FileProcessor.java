@@ -45,7 +45,7 @@ class FileProcessor {
             for (File file : directory.listFiles()) {
                 if (file.isFile()) {
                     count++;
-                } else if (file.isDirectory() && !file.toPath().endsWith("_Merged pdfs") && !file.toPath().endsWith("_Split")) {
+                } else if (file.isDirectory() && !file.toPath().endsWith("_Merged pdfs")) {
                     count += countFilesInDirectory(file);
                 }
             }
@@ -130,7 +130,9 @@ class FileProcessor {
         List<FileSignature> inconsistentList = new ArrayList<>();
         for (int i = 0; i < fileListModelMap.get(PageSize.GENERAL).getSize(); i++) {
             CustomFile file = fileListModelMap.get(PageSize.GENERAL).get(i);
-            if (erProcessor.getReferenceList().contains(file.getSignature())) {
+            FileSignature fileSignature = new FileSignature(file.getSignature());
+            fileSignature.resetSheet();
+            if (erProcessor.getReferenceList().contains(fileSignature)) {
                 file.setExistsInER(1);
             } else {
                 file.setExistsInER(0);
@@ -155,7 +157,8 @@ class FileProcessor {
             boolean check = false;
             for (int i = 0; i < listModel.getSize(); i++) {
                 FileSignature fileSignature = listModel.get(i).getSignature();
-                if (erSignature.equals(fileSignature)) {
+                // TODO - opracować, co z numerem arkusza
+                if (erSignature.equalsWithoutSheet(fileSignature)) {
                     check = true;
                     break;
                 }
@@ -254,7 +257,7 @@ class FileProcessor {
             Files.walkFileTree(path, EnumSet.noneOf(FileVisitOption.class), maxDepth, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    if (file.getParent().endsWith("_Merged pdfs") || file.getParent().endsWith("_Split")) return super.visitFile(file, attrs);
+                    if (file.getParent().endsWith("_Merged pdfs")) return super.visitFile(file, attrs);
                     incrementCounter();
                     CustomFile customFile = new CustomFile(file.toString());
                     DefaultListModel<CustomFile> listModel = fileListModelMap.get(PageSize.GENERAL);
@@ -262,7 +265,8 @@ class FileProcessor {
                             customFile.getName().toLowerCase().endsWith(".pdf")) {
                         if (customFile.getPageSize() == PageSize.VARIOUS) {
                             progressBar.setIndeterminate(true);
-                            PDFHandler.splitDocument(customFile, rootPath).forEach(listModel::addElement);
+                            PDFHandler.splitDocument(customFile, rootPath)
+                                    .forEach(listModel::addElement);
                             progressBar.setIndeterminate(false);
                         } else {
                             listModel.addElement(customFile);

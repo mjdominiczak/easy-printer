@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Michał Dominiczak
@@ -122,18 +123,19 @@ class PDFHandler {
         return Math.round(pt * 25.4f / 72);
     }
 
-    static ArrayList<CustomFile> splitDocument(CustomFile file, Path rootPath) {
+    static List<CustomFile> splitDocument(CustomFile file, Path rootPath) {
         PDDocument pdDocument = loadPDF(file);
-        ArrayList<CustomFile> singlePages = new ArrayList<>();
+        List<CustomFile> singlePages = new ArrayList<>();
         for (int i = 0; i < file.getPageCount(); i++) {
+            int sheetNo = i + 1;
             File directory = new File(rootPath.toString() + "\\_Split");
             directory.mkdir();
             String filename = file.getName();
             String[] splittedFilename = filename.split("\\.");
             String extension = "." + splittedFilename[splittedFilename.length - 1];
             String rawFilename = filename.substring(0, filename.lastIndexOf(extension));
-            String newFilename = String.format("%1$s p%2$02d%3$s", rawFilename, i, extension);
-            CustomFile newFile = new CustomFile(directory, newFilename);
+            String newFilename = String.format("%1$s p%2$02d%3$s", rawFilename, sheetNo, extension);
+            CustomFile newFile = new CustomFile(directory, newFilename, sheetNo);
             boolean fileCreated = false;
             try {
                 fileCreated = newFile.createNewFile();
