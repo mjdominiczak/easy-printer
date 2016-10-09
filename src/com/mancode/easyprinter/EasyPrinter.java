@@ -1,6 +1,7 @@
 package com.mancode.easyprinter;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Map;
@@ -23,13 +25,16 @@ import java.util.logging.SimpleFormatter;
  */
 public class EasyPrinter extends JPanel implements ActionListener, ItemListener {
 
+    private static final String programVersion = "v0.6";
+
     private static Logger logger = Logger.getLogger(FileProcessor.class.getName());
 
     private final Insets defaultInsets = new Insets(5, 5, 5, 5);
     private final JPanel additionalListsPanel;
     private final JList<CustomFile> mainList;
+    private final int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
+    private final Font defaultMonoFont = new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize);
     private JButton openFolderButton;
-    private JButton clearButton;
     private JButton loadERButton;
     private JButton loadRawListButton;
     private JButton printButton;
@@ -44,40 +49,17 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
     public EasyPrinter() {
         super(new GridBagLayout());
 
-        System.setProperty("java.util.logging.SimpleFormatter.format",
-                "[%1$tF %1$tT] %5$s%n");
+        setLogFormat();
 
-        try {
-            FileHandler fileHandler;
-            String logPath = "N:\\Public\\Dominiczak\\EasyPrinter\\Logs";
-            File nFile = new File(logPath);
-            if (nFile.exists()) {
-                fileHandler = new FileHandler(logPath + "\\log%u.txt", true);
-            } else {
-                fileHandler = new FileHandler(System.getProperty("user.dir") + "\\log%u.txt", true);
-            }
-            SimpleFormatter formatter = new SimpleFormatter();
-            fileHandler.setFormatter(formatter);
-            logger.addHandler(fileHandler);
-            logger.setUseParentHandlers(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setLoggerProperties();
 
-        int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
-        Font font = new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize);
-
-        //Initialize progress bar
         progressBar = new JProgressBar(0, 100);
-
-        //Initialize the file processor
         fileProcessor = new FileProcessor(progressBar);
 
         //Initialize a console
         console = new JTextArea(30,40);
-        console.setFont(font);
+        console.setFont(defaultMonoFont);
         console.setEditable(false);
-//        console.setBorder(BorderFactory.createLineBorder(Color.black));
         PrintStream printStream = new PrintStream(new MyOutputStream(console));
         System.setOut(printStream);
         System.setErr(printStream);
@@ -111,7 +93,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         additionalListsPanel = new JPanel(new CardLayout());
         Map<PageSize, JList<CustomFile>> additionalListsMap = new EnumMap<>(PageSize.class);
         Map<PageSize, JScrollPane> scrollPanesMap = new EnumMap<>(PageSize.class);
-        mainList.setFont(font);
+        mainList.setFont(defaultMonoFont);
         for (PageSize pageSize : PageSize.values()) {
             if (pageSize != PageSize.GENERAL &&
                     pageSize != PageSize.VARIOUS) {
@@ -120,7 +102,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
                 additionalListsMap.put(pageSize, thisList);
                 JScrollPane scrollPane = new JScrollPane(thisList);
                 scrollPanesMap.put(pageSize, scrollPane);
-                thisList.setFont(font);
+                thisList.setFont(defaultMonoFont);
                 JPanel listPanel = new JPanel(new BorderLayout());
                 listPanel.add(scrollPane);
                 additionalListsPanel.add(listPanel, pageSize.getText());
@@ -152,10 +134,6 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         loadRawListButton.setActionCommand("loadRaw");
         loadRawListButton.addActionListener(this);
 
-        clearButton = new JButton("Clear");
-        clearButton.setActionCommand("clear");
-        clearButton.addActionListener(this);
-
         printButton = new JButton("Print");
         printButton.setActionCommand("print");
         printButton.addActionListener(this);
@@ -175,7 +153,6 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 //        buttonsPanel.add(printButton);
         buttonsPanel.add(mergeButton);
         buttonsPanel.add(mergeAllButton);
-        buttonsPanel.add(clearButton);
 
         //Define constraints for top level panels and add them to the main layout
         //Set constraints for selectionPanel
@@ -218,6 +195,30 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
 
     }
 
+    private static void setLogFormat() {
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "[%1$tF %1$tT] %5$s%n");
+    }
+
+    private void setLoggerProperties() {
+        try {
+            FileHandler fileHandler;
+            String logPath = "N:\\Public\\Dominiczak\\EasyPrinter\\Logs";
+            File nFile = new File(logPath);
+            if (nFile.exists()) {
+                fileHandler = new FileHandler(logPath + "\\log%u.txt", true);
+            } else {
+                fileHandler = new FileHandler(System.getProperty("user.dir") + "\\log%u.txt", true);
+            }
+            SimpleFormatter formatter = new SimpleFormatter();
+            fileHandler.setFormatter(formatter);
+            logger.addHandler(fileHandler);
+            logger.setUseParentHandlers(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
@@ -256,13 +257,45 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         JFrame.setDefaultLookAndFeelDecorated(true);
 
         // Create and set up the content pane
-        frame.setContentPane(new EasyPrinter());
+        EasyPrinter easyPrinter = new EasyPrinter();
+        frame.setContentPane(easyPrinter);
+        frame.setJMenuBar(easyPrinter.createMenuBar());
 
         // Display the frame
         frame.setMinimumSize(new Dimension(800, 600));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private JMenuBar createMenuBar() {
+        JMenuBar menuBar;
+        JMenu menu;
+        JMenuItem menuItem;
+
+        menuBar = new JMenuBar();
+
+        menu = new JMenu("File");
+        menuBar.add(menu);
+
+        menuItem = new JMenuItem("Clear");
+        menuItem.setActionCommand("clear");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        menuItem = new JMenuItem("Exit");
+        menuItem.setActionCommand("exit");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+
+        menu = new JMenu("Help");
+        menuBar.add(menu);
+
+        menuItem = new JMenuItem("About");
+        menuItem.setActionCommand("about");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+
+        return menuBar;
     }
 
     @Override
@@ -281,6 +314,10 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             mergeAll();
         } else if (e.getActionCommand().equals("clear")) {
             clear();
+        } else if (e.getActionCommand().equals("exit")) {
+            exit();
+        } else if (e.getActionCommand().equals("about")) {
+            about();
         }
     }
 
@@ -371,6 +408,36 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         fileProcessor.clear();
         openFolderButton.requestFocus();
         logger.info("\tUser: " + System.getProperty("user.name") + "\tclear");
+    }
+
+    private void exit() {
+        System.exit(0);
+    }
+
+    private void about() {
+        JEditorPane aboutPane = new JEditorPane();
+        aboutPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+        aboutPane.setEditable(false);
+        Color c = UIManager.getColor("OptionPane.background");
+        String backgroundColor = String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
+        aboutPane.setBackground(c);
+        aboutPane.setText("<p style=\"background-color:" + backgroundColor + "\"><b>EasyPrinter " + programVersion + "</b><br><br>" +
+                "Author: Michał Dominiczak<br>" +
+                "Mail: <a href=\"mailto:michal-dominiczak@o2.pl\">michal-dominiczak@o2.pl</a><p>");
+        aboutPane.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().mail(e.getURL().toURI());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (URISyntaxException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+        JOptionPane.showMessageDialog(this, aboutPane, "About EasyPrinter", JOptionPane.PLAIN_MESSAGE);
     }
 
     @Override

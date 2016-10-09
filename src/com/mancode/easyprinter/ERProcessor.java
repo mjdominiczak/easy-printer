@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by Michał Dominiczak
@@ -71,72 +72,78 @@ class ERProcessor {
                     int drawingColNo = -1;
                     int bomColNo = -1;
                     int descriptionColNo = -1;
-                    int yellowColNo = -1;
+                    List<Integer> colorColList = new ArrayList<>();
+                    boolean searchCompleted = false;
                     searchLoop: {
                         for (Row row : sheet) {
                             for (Cell cell : row) {
-                                if (drawingColNo < 0
-                                        || bomColNo < 0
-                                        || descriptionColNo < 0
-                                        || yellowColNo < 0) {
-                                    if (drawingColNo < 0 && checkStringValue(cell, "Draw. ")) {
-                                        drawingColNo = cell.getColumnIndex();
-                                        headerRowNo = cell.getRowIndex();
-                                    }
-                                    if (descriptionColNo < 0 && checkStringValue(cell, "Description"))
-                                        descriptionColNo = cell.getColumnIndex();
-                                    if (bomColNo < 0 && checkStringValue(cell, "BOM"))
-                                        bomColNo = cell.getColumnIndex();
-
-                                    //finds the first YELLOW cell
-//                                    if (yellowColNo < 0 && checkFillColor(cell, "FFFFFF00"))
-                                    //finds the first FILLED and NOT WHITE cell
-                                    Color color = cell.getCellStyle().getFillForegroundColorColor();
-                                    if (yellowColNo < 0
-                                            && (isXLSX ? color != null : !(HSSFColor.toHSSFColor(color) instanceof HSSFColor.AUTOMATIC))
-                                            && color != null
-                                            && !checkFillColor(cell, new short[]{255, 255, 255}, isXLSX))
-                                        yellowColNo = cell.getColumnIndex();
-                                } else {
-                                    break searchLoop;
+                                if (drawingColNo < 0 && checkStringValue(cell, "Draw. ")) {
+                                    drawingColNo = cell.getColumnIndex();
+                                    headerRowNo = cell.getRowIndex();
                                 }
+                                if (descriptionColNo < 0 && checkStringValue(cell, "Description"))
+                                    descriptionColNo = cell.getColumnIndex();
+                                if (bomColNo < 0 && checkStringValue(cell, "BOM"))
+                                    bomColNo = cell.getColumnIndex();
+
+                                //finds the first YELLOW cell
+//                                    if (colorColNo < 0 && checkFillColor(cell, "FFFFFF00"))
+                                //finds the first FILLED and NOT WHITE cell
+                                Color color = cell.getCellStyle().getFillForegroundColorColor();
+                                if (!searchCompleted
+                                        && (isXLSX ? color != null : !(HSSFColor.toHSSFColor(color) instanceof HSSFColor.AUTOMATIC))
+                                        && color != null
+                                        && !checkFillColor(cell, new short[]{255, 255, 255}, isXLSX))
+                                    colorColList.add(cell.getColumnIndex());
+                            }
+                            searchCompleted = drawingColNo >= 0
+                                    && bomColNo >= 0
+                                    && descriptionColNo >= 0
+                                    && !colorColList.isEmpty();
+                            if (searchCompleted) {
+                                break searchLoop;
                             }
                         }
                     }
-                    if (headerRowNo < 0 || drawingColNo < 0 || descriptionColNo < 0 || yellowColNo < 0) {
-                        System.err.println("Yellow formatted cell or \"Draw. No.:\" column or \"Description\" column not found!");
+                    if (!searchCompleted) {
+                        System.err.println("Color filled cell or \"Draw. No.:\" column or \"Description\" column not found!");
                         break;
                     }
                     for (int i = headerRowNo + 1; i < sheet.getLastRowNum(); i++) {
                         Row row = sheet.getRow(i);
                         if (row == null) continue;
-                        Cell checkCell = row.getCell(yellowColNo);
-                        Cell descriptionCell = row.getCell(descriptionColNo);
-                        Cell bomCell = row.getCell(bomColNo);
                         boolean transferToReferenceList = false;
                         boolean hasBOM = false;
-                        if (checkCell != null && descriptionCell != null && bomCell != null) {
-                            switch (checkCell.getCellType()) {
-                                case Cell.CELL_TYPE_STRING:
-                                    if (checkCell.getStringCellValue().toLowerCase().trim().equals("x")) {
-                                        Pattern pattern = Pattern.compile(".*general.*list.*");
-                                        Matcher matcher = pattern.matcher(descriptionCell.getStringCellValue().toLowerCase());
-                                        transferToReferenceList = !matcher.lookingAt();
-                                        if (bomCell.getCellType() == Cell.CELL_TYPE_STRING) {
-                                            if (!bomCell.getStringCellValue().equals("")) hasBOM = true;
-                                        }
-                                    }
-                                    break;
-                                case Cell.CELL_TYPE_NUMERIC:
-                                    if (checkCell.getNumericCellValue() > 0) {
-                                        transferToReferenceList = true;
-                                        if (bomCell.getCellType() == Cell.CELL_TYPE_STRING) {
-                                            if (!bomCell.getStringCellValue().equals("")) hasBOM = true;
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
+                        boolean isGL = false;
+                        Cell descriptionCell = row.getCell(descriptionColNo);
+                        Cell bomCell = row.getCell(bomColNo);
+                        int quantity = 0;
+                        List<Cell> checkCells = colorColList.stream().map(row::getCell).collect(Collectors.toList());
+                        if (bomCell != null && bomCell.getCellType() == Cell.CELL_TYPE_STRING) {
+                            if (!bomCell.getStringCellValue().equals("")) hasBOM = true;
+                        }
+                        if (descriptionCell != null) {
+                            Pattern pattern = Pattern.compile(".*general.*list.*");
+                            Matcher matcher = pattern.matcher(descriptionCell.getStringCellValue().toLowerCase());
+                            isGL = matcher.lookingAt();
+                        }
+                        for (Cell checkCell : checkCells) {
+                            if (checkCell != null && !isGL) {
+                                switch (checkCell.getCellType()) {
+                                    case Cell.CELL_TYPE_STRING:
+                                        String trimmedValue = checkCell.getStringCellValue().toLowerCase().trim();
+                                        if (trimmedValue.equals("x"))
+                                            transferToReferenceList = true;
+                                        else if (trimmedValue.equals("-x") && transferToReferenceList)
+                                            transferToReferenceList = false;
+                                        break;
+                                    case Cell.CELL_TYPE_NUMERIC:
+                                        quantity += (int)checkCell.getNumericCellValue();
+                                        transferToReferenceList = quantity > 0;
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
                         }
                         if (transferToReferenceList) {
