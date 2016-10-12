@@ -8,7 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="pdfbox-2.0.1" level="project" />
-    <orderEntry type="library" name="commons-logging-1.2" level="project" />
     <orderEntry type="library" name="tika-core-1.13" level="project" />
     <orderEntry type="library" name="poi-3.14" level="project" />
     <orderEntry type="library" name="poi-ooxml-3.14" level="project" />
@@ -17,5 +16,6 @@
     <orderEntry type="library" name="fontbox-2.0.2" level="project" />
     <orderEntry type="library" name="commons-lang3-3.4" level="project" />
     <orderEntry type="library" name="poi-scratchpad-3.14" level="project" />
+    <orderEntry type="library" name="commons-logging-1.2" level="project" />
   </component>
 </module>

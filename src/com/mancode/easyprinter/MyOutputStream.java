@@ -11,11 +11,11 @@ import java.io.OutputStream;
  * Copyright reserved
  */
 
-public class MyOutputStream extends OutputStream {
+class MyOutputStream extends OutputStream {
 
     private JTextArea textArea;
 
-    public MyOutputStream(JTextArea textArea) {
+    MyOutputStream(JTextArea textArea) {
         this.textArea = textArea;
     }
 

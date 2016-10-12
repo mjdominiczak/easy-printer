@@ -17,13 +17,13 @@ import java.util.Vector;
  * e-mail: michal-dominiczak@o2.pl
  * Copyright reserved
  */
-public class PrintHandler {
+class PrintHandler {
 
     private PrinterJob printerJob;
     private PrintService printService;
     private PrintRequestAttributeSet printAttributes;
 
-    public PrintHandler() {
+    PrintHandler() {
         printerJob = PrinterJob.getPrinterJob();
         printService = printerJob.getPrintService();
     }
@@ -49,7 +49,7 @@ public class PrintHandler {
         printAttributes = new HashPrintRequestAttributeSet();
     }
 
-    public void printPDF(PDDocument document) throws PrinterException {
+    void printPDF(PDDocument document) throws PrinterException {
         PDFPageable pageableDocument = new PDFPageable(document);
         if (printService != null) {
             printerJob.setPrintService(printService);

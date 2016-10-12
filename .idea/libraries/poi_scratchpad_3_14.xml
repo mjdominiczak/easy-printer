@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="commons-logging-1.2">
+  <library name="poi-scratchpad-3.14">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/poi-scratchpad-3.14.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

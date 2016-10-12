@@ -9,7 +9,7 @@ import java.util.List;
  * Copyright reserved
  */
 
-public class Test {
+class Test {
 
     private static final String file = "C:\\Users\\Manveru\\Desktop\\test\\ER test.xlsx";
     private static List<Integer> order;

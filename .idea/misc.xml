@@ -47,6 +47,24 @@
         <option value="$PROJECT_DIR$/lib/tika-1.13/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/lib/tika-1.13/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-app/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-batch/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-bundle/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-core/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-example/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-java7/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-langdetect/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-parent/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-parsers/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-serialization/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-server/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-translate/pom.xml" />
+        <option value="$PROJECT_DIR$/lib/tika-1.13/tika-xmp/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />

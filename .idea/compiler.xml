@@ -22,18 +22,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="tika-app" />
-        <module name="tika-batch" />
-        <module name="tika-bundle" />
-        <module name="tika-core" />
-        <module name="tika-example" />
-        <module name="tika-java7" />
-        <module name="tika-langdetect" />
-        <module name="tika-parsers" />
-        <module name="tika-serialization" />
-        <module name="tika-server" />
-        <module name="tika-translate" />
-        <module name="tika-xmp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
