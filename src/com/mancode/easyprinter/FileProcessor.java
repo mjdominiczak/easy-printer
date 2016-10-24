@@ -26,9 +26,7 @@ class FileProcessor {
      * Initializes fields with default, empty constructors,
      * assigns reference to progress bar for long-running tasks
      */
-    FileProcessor(JProgressBar progressBar) {
-        this.progressBar = progressBar;
-
+    FileProcessor() {
         //Initialize structures for storing documents of different sizes
         fileListModelMap = new EnumMap<>(PageSize.class);
         for (PageSize pageSize : PageSize.values()) {
@@ -51,6 +49,10 @@ class FileProcessor {
             }
         }
         return count;
+    }
+
+    void setProgressBar(JProgressBar progressBar) {
+        this.progressBar = progressBar;
     }
 
     String getLogInfo() {

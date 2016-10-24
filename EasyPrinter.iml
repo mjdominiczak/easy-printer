@@ -17,5 +17,7 @@
     <orderEntry type="library" name="commons-lang3-3.4" level="project" />
     <orderEntry type="library" name="poi-scratchpad-3.14" level="project" />
     <orderEntry type="library" name="commons-logging-1.2" level="project" />
+    <orderEntry type="library" name="miglayout-swing-5.0" level="project" />
+    <orderEntry type="library" name="miglayout-core-5.0" level="project" />
   </component>
 </module>

@@ -7,107 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6a4749b-9bf1-4167-8493-2e584b367d7f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/AbstractLayout.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/DimensionInfo.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/GridConstraints.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/GridLayoutManager.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/HorizontalInfo.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/LayoutState.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/Spacer.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/SupportCode$TextWithMnemonic.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/SupportCode.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/Util.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/intellij/uiDesigner/core/VerticalInfo.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/CustomFile.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/ERProcessor$ERComparator.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/ERProcessor.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/EasyPrinter$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/EasyPrinter$ERHighlightingRenderer.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/EasyPrinter.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/FileListModel.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/FileProcessor$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/FileProcessor$FileProcessorWorker$1.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/FileProcessor$FileProcessorWorker.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/FileProcessor$SortType.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/FileProcessor.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/FileSignature.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/MyOutputStream.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/PDFHandler$PDFProperties.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/PDFHandler.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/PageSize.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/PrintHandler.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/com/mancode/easyprinter/Test.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/fileTemplates/includes/File Header.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace (Kopia powodująca konflikty (użytkownik Villemo) 2016-06-14).xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/LICENSE.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/NOTICE.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/RELEASE-NOTES.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/allclasses-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/allclasses-noframe.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/constant-values.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/deprecated-list.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/help-doc.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/index-all.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/Log.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/LogConfigurationException.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/LogFactory.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/LogSource.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/class-use/Log.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/class-use/LogConfigurationException.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/class-use/LogFactory.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/class-use/LogSource.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/AvalonLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/Jdk13LumberjackLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/Jdk14Logger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/Log4JLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/LogFactoryImpl.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/LogKitLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/NoOpLog.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/ServletContextCleaner.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/SimpleLog.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/WeakHashtable.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/AvalonLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/Jdk13LumberjackLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/Jdk14Logger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/Log4JLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/LogFactoryImpl.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/LogKitLogger.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/NoOpLog.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/ServletContextCleaner.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/SimpleLog.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/class-use/WeakHashtable.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/package-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/package-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/package-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/impl/package-use.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/package-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/package-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/package-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/org/apache/commons/logging/package-use.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/overview-frame.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/overview-summary.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/overview-tree.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/package-list" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/resources/background.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/resources/tab.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/resources/titlebar.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/resources/titlebar_end.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/serialized-form.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/apidocs/stylesheet.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/commons-logging-1.2-javadoc.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/commons-logging-1.2/commons-logging-1.2.jar" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/lib/tika-1.13/tika-core/src/main/java/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/out/production/EasyPrinter/META-INF/MANIFEST.MF" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/EasyPrinter_jar.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/EasyPrinter_jar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/commons_logging_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/commons_logging_1_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EasyPrinter.iml" afterPath="$PROJECT_DIR$/EasyPrinter.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mancode/easyprinter/MyOutputStream.java" afterPath="$PROJECT_DIR$/src/com/mancode/easyprinter/MyOutputStream.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mancode/easyprinter/PrintHandler.java" afterPath="$PROJECT_DIR$/src/com/mancode/easyprinter/PrintHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mancode/easyprinter/Test.java" afterPath="$PROJECT_DIR$/src/com/mancode/easyprinter/Test.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java" afterPath="$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java" />
     </list>
     <ignored path="EasyPrinter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -126,6 +27,8 @@
     <ignored path="$PROJECT_DIR$/lib/tika-1.13/tika-example/target/" />
     <ignored path="$PROJECT_DIR$/lib/tika-1.13/tika-serialization/target/" />
     <ignored path="$PROJECT_DIR$/lib/tika-1.13/target/" />
+    <ignored mask="log*.txt" />
+    <ignored mask="log*.lck" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -145,8 +48,28 @@
       <file leaf-file-name="EasyPrinter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="884">
-              <caret line="251" column="55" selection-start-line="251" selection-start-column="55" selection-end-line="251" selection-end-column="55" />
+            <state relative-caret-position="-379">
+              <caret line="265" column="17" selection-start-line="265" selection-start-column="17" selection-end-line="265" selection-end-column="17" />
+              <folding>
+                <element signature="e#7940#7968#0" expanded="false" />
+                <element signature="e#7940#7968#0" expanded="false" />
+                <element signature="method#MainPanel#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+                <element signature="method#getButton#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+                <element signature="method#getTextField#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+                <element signature="method#reset#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+                <element signature="method#stateUpdateDirectoryOpened#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+                <element signature="method#stateUpdateERLoaded#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+                <element signature="method#stateUpdateRawLoaded#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/Test.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -172,23 +95,9 @@
       <file leaf-file-name="FileProcessor.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2142">
-              <caret line="134" column="73" selection-start-line="134" selection-start-column="73" selection-end-line="134" selection-end-column="73" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#1993#1994#0" expanded="false" />
-                <element signature="e#2024#2025#0" expanded="false" />
-                <element signature="e#7763#7764#0" expanded="false" />
-                <element signature="e#7807#7808#0" expanded="false" />
-                <element signature="e#8445#8446#0" expanded="false" />
-                <element signature="e#8515#8516#0" expanded="false" />
-                <element signature="e#8587#8588#0" expanded="false" />
-                <element signature="e#8640#8641#0" expanded="false" />
-                <element signature="e#9076#9077#0" expanded="false" />
-                <element signature="e#9116#9117#0" expanded="false" />
-                <element signature="e#10952#10953#0" expanded="false" />
-                <element signature="e#11001#11002#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="221">
+              <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -305,7 +214,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="chaos" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -335,12 +244,13 @@
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/PDFHandler.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/FileSignature.java" />
-        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/ERProcessor.java" />
-        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/MyOutputStream.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/PrintHandler.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/Test.java" />
+        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/hjk.form" />
+        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java" />
+        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java" />
       </list>
     </option>
   </component>
@@ -401,6 +311,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -408,10 +321,6 @@
               <option name="myItemId" value="EasyPrinter" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -433,24 +342,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.28965518" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/commons-logging-1.2.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/log.txt" />
     <property name="last.edited.regexp" value="p02 asd.pdf" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="271" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
@@ -808,6 +714,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_MODE" value="false" />
     <option name="ACTIVE_ACTIONS" value=",ALPHA_COMPARATOR" />
   </component>
   <component name="SvnConfiguration">
@@ -933,7 +840,14 @@
       <option name="project" value="LOCAL" />
       <updated>1476004829947</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Layout manager changed to MigLayout">
+      <created>1477339995073</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1477339995073</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView">
@@ -947,7 +861,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -956,11 +870,12 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3240652" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24832214" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2674976" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27612656" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21215352" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18390192" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21162046" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32694152" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18976545" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -975,7 +890,6 @@
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3994253" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32694152" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1053,16 +967,25 @@
     <MESSAGE value="EasyPrinter v0.5&#10;Added:&#10;- sorting acc. to raw list&#10;Fixed:&#10;- colors problem&#10;- error handling when file not accessible" />
     <MESSAGE value="EasyPrinter v0.5a&#10;Fixed:&#10;- Errors linked to the splitted files loading" />
     <MESSAGE value="EasyPrinter v0.6&#10;Added:&#10;- Menu bar, about dialog; clear button removed&#10;- Possibility to process multiple ER columns at once &#10;Fixed:&#10;(- Errors linked to the splitted files loading)" />
-    <option name="LAST_COMMIT_MESSAGE" value="EasyPrinter v0.6&#10;Added:&#10;- Menu bar, about dialog; clear button removed&#10;- Possibility to process multiple ER columns at once &#10;Fixed:&#10;(- Errors linked to the splitted files loading)" />
+    <MESSAGE value="Layout manager changed to MigLayout" />
+    <option name="LAST_COMMIT_MESSAGE" value="Layout manager changed to MigLayout" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java</url>
+          <line>264</line>
+          <properties />
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="102" />
+      <option name="time" value="107" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1071,15 +994,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/GUI.java" />
-    <entry file="jar://$PROJECT_DIR$/lib/pdfbox-2.0.1.jar!/org/apache/pdfbox/pdfparser/PDFParser.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.7.0_51/src.zip!/java/awt/event/ActionListener.java" />
     <entry file="jar://$PROJECT_DIR$/lib/pdfbox-2.0.1.jar!/org/apache/pdfbox/pdmodel/PDDocument.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="292">
@@ -1110,13 +1024,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/java/beans/PropertyChangeListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/tika-core-1.13.jar!/org/apache/tika/Tika.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -1138,16 +1045,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/MainGUI.form">
-      <provider editor-type-id="ui-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/MainGUI.form" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/javax/swing/DefaultComboBoxModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -1174,20 +1072,8 @@
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/lib/poi-ooxml-3.14.jar!/org/apache/poi/xssf/usermodel/XSSFWorkbook.class" />
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FilesHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/tika-1.13/tika-core/src/main/java/org/apache/tika/parser/AutoDetectParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="130" column="16" selection-start-line="130" selection-start-column="16" selection-end-line="130" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FilesHandler.java" />
+    <entry file="file://$PROJECT_DIR$/lib/tika-1.13/tika-core/src/main/java/org/apache/tika/parser/AutoDetectParser.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/java/io/File.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="500">
@@ -1271,13 +1157,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="147" column="19" selection-start-line="147" selection-start-column="19" selection-end-line="147" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1428">
@@ -1305,28 +1184,6 @@
             <element signature="e#5110#5111#0" expanded="false" />
             <element signature="e#5140#5141#0" expanded="false" />
             <element signature="e#5191#5192#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2142">
-          <caret line="134" column="73" selection-start-line="134" selection-start-column="73" selection-end-line="134" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1993#1994#0" expanded="false" />
-            <element signature="e#2024#2025#0" expanded="false" />
-            <element signature="e#7763#7764#0" expanded="false" />
-            <element signature="e#7807#7808#0" expanded="false" />
-            <element signature="e#8445#8446#0" expanded="false" />
-            <element signature="e#8515#8516#0" expanded="false" />
-            <element signature="e#8587#8588#0" expanded="false" />
-            <element signature="e#8640#8641#0" expanded="false" />
-            <element signature="e#9076#9077#0" expanded="false" />
-            <element signature="e#9116#9117#0" expanded="false" />
-            <element signature="e#10952#10953#0" expanded="false" />
-            <element signature="e#11001#11002#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1371,38 +1228,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/MainGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-391">
-          <caret line="34" column="34" selection-start-line="0" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileListModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/MainGui.java" />
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileListModel.java" />
     <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/PrintHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
           <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding>
-            <element signature="e#1323#1324#0" expanded="true" />
-            <element signature="e#1356#1357#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1410,15 +1241,76 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log0.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/hjk.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="381" column="29" selection-start-line="381" selection-start-column="29" selection-end-line="381" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/tika-core-1.13.jar!/org/apache/tika/config/TikaConfig.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/java/beans/PropertyChangeListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="884">
-          <caret line="251" column="55" selection-start-line="251" selection-start-column="55" selection-end-line="251" selection-end-column="55" />
-          <folding />
+        <state relative-caret-position="-379">
+          <caret line="265" column="17" selection-start-line="265" selection-start-column="17" selection-end-line="265" selection-end-column="17" />
+          <folding>
+            <element signature="e#7940#7968#0" expanded="false" />
+            <element signature="e#7940#7968#0" expanded="false" />
+            <element signature="method#MainPanel#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+            <element signature="method#getButton#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+            <element signature="method#getTextField#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+            <element signature="method#reset#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+            <element signature="method#stateUpdateDirectoryOpened#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+            <element signature="method#stateUpdateERLoaded#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+            <element signature="method#stateUpdateRawLoaded#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

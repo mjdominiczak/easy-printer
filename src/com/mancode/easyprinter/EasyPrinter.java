@@ -1,19 +1,17 @@
 package com.mancode.easyprinter;
 
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -23,176 +21,32 @@ import java.util.logging.SimpleFormatter;
  * e-mail: michal-dominiczak@o2.pl
  * Copyright reserved
  */
-public class EasyPrinter extends JPanel implements ActionListener, ItemListener {
+public class EasyPrinter extends JPanel implements ActionListener {
 
     private static final String programVersion = "v0.6";
 
     private static Logger logger = Logger.getLogger(FileProcessor.class.getName());
-
-    private final Insets defaultInsets = new Insets(5, 5, 5, 5);
-    private final JPanel additionalListsPanel;
-    private final JList<CustomFile> mainList;
     private final int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
     private final Font defaultMonoFont = new Font(Font.MONOSPACED, Font.PLAIN, defaultFontSize);
-    private JButton openFolderButton;
-    private JButton loadERButton;
-    private JButton loadRawListButton;
-    private JButton printButton;
-    private JButton mergeButton;
-    private JButton mergeAllButton;
-    private JProgressBar progressBar;
-    private JTextField pathTextField;
+    private MainPanel mainPanel;
     private JComboBox pageSizeComboBox;
-    private JTextArea console;
     private FileProcessor fileProcessor;
 
-    public EasyPrinter() {
-        super(new GridBagLayout());
+    private EasyPrinter() {
+        super(new MigLayout(
+                "wrap",         // layout constraints
+                "[grow]",       // columns constraints
+                "[grow]"        // rows constraints
+        ));
 
         setLogFormat();
-
         setLoggerProperties();
 
-        progressBar = new JProgressBar(0, 100);
-        fileProcessor = new FileProcessor(progressBar);
-
-        //Initialize a console
-        console = new JTextArea(30,40);
-        console.setFont(defaultMonoFont);
-        console.setEditable(false);
-        PrintStream printStream = new PrintStream(new MyOutputStream(console));
-        System.setOut(printStream);
-        System.setErr(printStream);
-
-        //Set console panel
-        JScrollPane consoleScrollPane = new JScrollPane(console);
-
-        //Set components in selectionPanel
-        JLabel selectDirectoryLabel = new JLabel("Open directory with data to be printed");
-        pathTextField = new JTextField();
-        pathTextField.setEnabled(false);
-        openFolderButton = new JButton("Open");
-        openFolderButton.setActionCommand("open");
-        openFolderButton.addActionListener(this);
-
-        //Set selectionPanel
-        JPanel selectionPanel = new JPanel(new BorderLayout());
-        selectionPanel.add(selectDirectoryLabel, BorderLayout.NORTH);
-        selectionPanel.add(pathTextField, BorderLayout.CENTER);
-        selectionPanel.add(openFolderButton, BorderLayout.EAST);
-
-        //Set components in mainListPanel
-        mainList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
-        mainList.setCellRenderer(new ERHighlightingRenderer());
-
-        //Set mainListPanel
-        JScrollPane mainListPanel = new JScrollPane(mainList);
-
-        //Set components in cardAXPanels
-        //Set additionalListsPanel
-        additionalListsPanel = new JPanel(new CardLayout());
-        Map<PageSize, JList<CustomFile>> additionalListsMap = new EnumMap<>(PageSize.class);
-        Map<PageSize, JScrollPane> scrollPanesMap = new EnumMap<>(PageSize.class);
-        mainList.setFont(defaultMonoFont);
-        for (PageSize pageSize : PageSize.values()) {
-            if (pageSize != PageSize.GENERAL &&
-                    pageSize != PageSize.VARIOUS) {
-                JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(pageSize));
-//                JList<CustomFile> thisList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
-                additionalListsMap.put(pageSize, thisList);
-                JScrollPane scrollPane = new JScrollPane(thisList);
-                scrollPanesMap.put(pageSize, scrollPane);
-                thisList.setFont(defaultMonoFont);
-                JPanel listPanel = new JPanel(new BorderLayout());
-                listPanel.add(scrollPane);
-                additionalListsPanel.add(listPanel, pageSize.getText());
-            }
-        }
-
-        //Set pageSizeComboBoxPanel
-        JPanel pageSizeComboBoxPanel = new JPanel(new BorderLayout());
+        fileProcessor = new FileProcessor();
+        mainPanel = new MainPanel();
+        fileProcessor.setProgressBar(mainPanel.getProgressBar());
+        add(mainPanel, "grow");
         pageSizeComboBox = new JComboBox<>(fileProcessor.getPageSizeComboBoxModel());
-        pageSizeComboBox.setEditable(false);
-        pageSizeComboBox.addItemListener(this);
-//        pageSizeComboBox.setEnabled(false);
-        pageSizeComboBoxPanel.add(pageSizeComboBox);
-
-        //Set components in progressPanel
-        progressBar.setValue(0);
-        progressBar.setStringPainted(false);
-
-        //Set progressPanel
-        JPanel progressPanel = new JPanel(new BorderLayout());
-        progressPanel.add(progressBar, BorderLayout.CENTER);
-
-        //Set components in buttonsPanel
-        loadERButton = new JButton("Load ER");
-        loadERButton.setActionCommand("loadER");
-        loadERButton.addActionListener(this);
-
-        loadRawListButton = new JButton("Load raw list");
-        loadRawListButton.setActionCommand("loadRaw");
-        loadRawListButton.addActionListener(this);
-
-        printButton = new JButton("Print");
-        printButton.setActionCommand("print");
-        printButton.addActionListener(this);
-
-        mergeButton = new JButton("Merge this list");
-        mergeButton.setActionCommand("merge");
-        mergeButton.addActionListener(this);
-
-        mergeAllButton = new JButton("Merge all lists");
-        mergeAllButton.setActionCommand("mergeAll");
-        mergeAllButton.addActionListener(this);
-
-        //Set buttonsPanel
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.add(loadERButton);
-        buttonsPanel.add(loadRawListButton);
-//        buttonsPanel.add(printButton);
-        buttonsPanel.add(mergeButton);
-        buttonsPanel.add(mergeAllButton);
-
-        //Define constraints for top level panels and add them to the main layout
-        //Set constraints for selectionPanel
-        GridBagConstraints selectionPanelConstraints = new GridBagConstraints(
-                //gridx, gridy, gridwidth, gridheight, weightx, weighty, anchor, fill, insets, ipadx, ipady
-                0, 0, 2, 1, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
-
-        //Set constraints for mainListPanel
-        GridBagConstraints mainListConstraints = new GridBagConstraints(
-                0, 1, 1, 2, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, defaultInsets, 0, 0);
-
-        //Set constraints for pageSizeComboBoxPanel
-        GridBagConstraints pageSizeComboBoxConstraints = new GridBagConstraints(
-                1, 1, 1, 1, 0.5, 0, GridBagConstraints.LINE_END, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
-
-        //Set constraints for additionalListsPanel
-        GridBagConstraints additionalListsConstraints = new GridBagConstraints(
-                1, 2, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, defaultInsets, 0, 0);
-
-        //Set constraints for progressPanel
-        GridBagConstraints progressPanelConstraints = new GridBagConstraints(
-                0, 3, 1, 1, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
-
-        //Set constraints for buttonsPanel
-        GridBagConstraints buttonsPanelConstraints = new GridBagConstraints(
-                1, 3, 1, 1, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, defaultInsets, 0, 0);
-
-        //Set constraints for consoleScrollPane
-        GridBagConstraints consoleScrollPaneConstraints = new GridBagConstraints(
-                2, 0, 1, 4, 0.5, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, defaultInsets, 0, 0);
-
-        //Add panels to the main layout
-        add(selectionPanel, selectionPanelConstraints);
-        add(mainListPanel, mainListConstraints);
-        add(pageSizeComboBoxPanel, pageSizeComboBoxConstraints);
-        add(additionalListsPanel, additionalListsConstraints);
-        add(progressPanel, progressPanelConstraints);
-        add(buttonsPanel, buttonsPanelConstraints);
-        add(consoleScrollPane, consoleScrollPaneConstraints);
-
     }
 
     private static void setLogFormat() {
@@ -223,7 +77,6 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
         SwingUtilities.invokeLater(EasyPrinter::createAndShowGui);
-
     }
 
     private static void createAndShowGui() {
@@ -306,12 +159,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
             loadER();
         } else if (e.getActionCommand().equals("loadRaw")) {
             loadRaw();
-        } else if (e.getActionCommand().equals("print")) {
-            print();
         } else if (e.getActionCommand().equals("merge")) {
             merge();
-        } else if (e.getActionCommand().equals("mergeAll")) {
-            mergeAll();
         } else if (e.getActionCommand().equals("clear")) {
             clear();
         } else if (e.getActionCommand().equals("exit")) {
@@ -327,7 +176,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         int returnValue = openFileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             Path path = openFileChooser.getSelectedFile().toPath();
-            pathTextField.setText(path.toString());
+            mainPanel.stateUpdateDirectoryOpened(path.toString());
             fileProcessor.addFilesFromDirectory(path);
         }
         logger.info("\tUser: " + System.getProperty("user.name") + "\topen");
@@ -339,6 +188,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         int returnValue = openFileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File file = openFileChooser.getSelectedFile();
+            mainPanel.stateUpdateERLoaded(file.toString());
             try {
                 fileProcessor.addER(file);
             } catch (IOException e) {
@@ -355,6 +205,7 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         int returnValue = openFileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File file = openFileChooser.getSelectedFile();
+            mainPanel.stateUpdateRawLoaded(file.toString());
             try {
                 fileProcessor.addRaw(file);
             } catch (IOException e) {
@@ -365,28 +216,28 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         logger.info("\tUser: " + System.getProperty("user.name") + "\tloadRaw");
     }
 
-    private void print() {
-        mainList.getSelectedValue().printPDF();
-    }
+//    private void print() {
+//        mainList.getSelectedValue().printPDF();
+//    }
+
+//    private void merge() {
+//        final JFileChooser saveFileChooser = new JFileChooser();
+////        saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//        String filename = "all " + pageSizeComboBox.getSelectedItem().toString() + ".pdf";
+//        saveFileChooser.setSelectedFile(new File(filename));
+//        int returnValue = saveFileChooser.showSaveDialog(this);
+//        if (returnValue == JFileChooser.APPROVE_OPTION) {
+//            File file = saveFileChooser.getSelectedFile();
+//            try {
+//                fileProcessor.mergeList(file, (PageSize)pageSizeComboBox.getSelectedItem());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        logger.info("\tUser: " + System.getProperty("user.name") + "\tmerge");
+//    }
 
     private void merge() {
-        final JFileChooser saveFileChooser = new JFileChooser();
-//        saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        String filename = "all " + pageSizeComboBox.getSelectedItem().toString() + ".pdf";
-        saveFileChooser.setSelectedFile(new File(filename));
-        int returnValue = saveFileChooser.showSaveDialog(this);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File file = saveFileChooser.getSelectedFile();
-            try {
-                fileProcessor.mergeList(file, (PageSize)pageSizeComboBox.getSelectedItem());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        logger.info("\tUser: " + System.getProperty("user.name") + "\tmerge");
-    }
-
-    private void mergeAll() {
         File directory = new File(fileProcessor.getRootPath().toString() + "\\_Merged pdfs");
         boolean created = directory.mkdir();
         if (created || directory.exists()) {
@@ -403,10 +254,8 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
     }
 
     private void clear() {
-        pathTextField.setText("");
-        console.setText("");
+        mainPanel.reset();
         fileProcessor.clear();
-        openFolderButton.requestFocus();
         logger.info("\tUser: " + System.getProperty("user.name") + "\tclear");
     }
 
@@ -440,11 +289,113 @@ public class EasyPrinter extends JPanel implements ActionListener, ItemListener 
         JOptionPane.showMessageDialog(this, aboutPane, "About EasyPrinter", JOptionPane.PLAIN_MESSAGE);
     }
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        if (e.getSource() == pageSizeComboBox) {
-            CardLayout cl = (CardLayout)(additionalListsPanel.getLayout());
-            cl.show(additionalListsPanel, e.getItem().toString());
+    private class MainPanel extends JPanel {
+        private JButton openButton, loadERButton, loadRawButton, mergeButton;
+        private JTextField openTextField, loadERTextField, loadRawTextField;
+        private JList<CustomFile> mainList;
+        private JTextArea console;
+        private JProgressBar progressBar;
+
+        private MainPanel() {
+            setLayout(new MigLayout(
+                    "wrap 2",
+                    "[][grow]6",
+                    "[][][][][grow]6[]"
+            ));
+
+            initComponents();
+            addComponents();
+        }
+
+        private void initComponents() {
+            openButton = getButton("Open directory", "open");
+            openButton.setToolTipText("Open directory containing files to be printed");
+            openButton.addActionListener(EasyPrinter.this);
+            loadERButton = getButton("Load ER", "loadER");
+            loadERButton.setToolTipText("Select location of the Engineering Release file, according to which files should be sorted");
+            loadERButton.addActionListener(EasyPrinter.this);
+            loadRawButton = getButton("Load raw", "loadRaw");
+            loadRawButton.setToolTipText("Select location of the raw Excel file, according to which files should be sorted");
+            loadRawButton.addActionListener(EasyPrinter.this);
+            mergeButton = getButton("Merge", "merge");
+            mergeButton.setToolTipText("Click to merge pdf files of the same page size into single files");
+            mergeButton.addActionListener(EasyPrinter.this);
+            openTextField = getTextField();
+            loadERTextField = getTextField();
+            loadRawTextField = getTextField();
+            mainList = new JList<>(fileProcessor.getFileListModel(PageSize.GENERAL));
+            mainList.setFont(defaultMonoFont);
+            mainList.setCellRenderer(new ERHighlightingRenderer());
+            console = new JTextArea();
+            console.setFont(defaultMonoFont);
+            console.setEditable(false);
+            PrintStream printStream = new PrintStream(new MyOutputStream(console));
+            System.setOut(printStream);
+            System.setErr(printStream);
+            progressBar = new JProgressBar(0, 100);
+            progressBar.setValue(0);
+            progressBar.setStringPainted(false);
+            reset();
+        }
+
+        private void addComponents() {
+            add(openButton, "sg buttons");
+            add(openTextField, "sg tfs, grow");
+            add(loadERButton, "sg buttons");
+            add(loadERTextField, "sg tfs, grow");
+            add(loadRawButton, "sg buttons");
+            add(loadRawTextField, "sg tfs, grow");
+            add(mergeButton, "sg buttons, wrap");
+            add(new JScrollPane(mainList), "span, grow");
+            add(progressBar, "dock south, growx");
+            add(new JScrollPane(console), "dock east, grow, width max(200, 25%), gapbottom 6");
+        }
+
+        private JButton getButton(String label, String action) {
+            JButton button = new JButton(label);
+            button.setActionCommand(action);
+            return button;
+        }
+
+        private JTextField getTextField() {
+            JTextField tf = new JTextField();
+            tf.setEditable(false);
+            return tf;
+        }
+
+        void reset() {
+            openButton.requestFocus();
+            loadERButton.setEnabled(false);
+            loadRawButton.setEnabled(false);
+            mergeButton.setEnabled(false);
+            openTextField.setText("");
+            openTextField.setEditable(false);
+            loadERTextField.setText("");
+            loadERTextField.setEditable(false);
+            loadRawTextField.setText("");
+            loadRawTextField.setEditable(false);
+            console.setText("");
+        }
+
+        void stateUpdateDirectoryOpened(String path) {
+            openTextField.setText(path);
+            loadERButton.setEnabled(true);
+            loadRawButton.setEnabled(true);
+            mergeButton.setEnabled(true);
+        }
+
+        void stateUpdateERLoaded(String path) {
+            loadERTextField.setText(path);
+            loadRawTextField.setText("");
+        }
+
+        void stateUpdateRawLoaded(String path) {
+            loadRawTextField.setText(path);
+            loadERTextField.setText("");
+        }
+
+        JProgressBar getProgressBar() {
+            return progressBar;
         }
     }
 
