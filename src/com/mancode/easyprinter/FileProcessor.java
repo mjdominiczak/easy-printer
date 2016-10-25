@@ -3,6 +3,7 @@ package com.mancode.easyprinter;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -79,8 +80,8 @@ class FileProcessor {
                 Integer progress = (Integer) evt.getNewValue();
                 progressBar.setValue(Math.min(progress, 100));
                 if (progress >= 100) {
-                    progressBar.setValue(0);
-                    progressBar.setStringPainted(false);
+                    progressBar.setValue(progressBar.getMinimum());
+                    progressBar.setString("");
                 }
             }
         });
@@ -159,7 +160,6 @@ class FileProcessor {
             boolean check = false;
             for (int i = 0; i < listModel.getSize(); i++) {
                 FileSignature fileSignature = listModel.get(i).getSignature();
-                // TODO - opracować, co z numerem arkusza
                 if (erSignature.equalsWithoutSheet(fileSignature)) {
                     check = true;
                     break;
@@ -254,8 +254,8 @@ class FileProcessor {
 
         @Override
         protected Void doInBackground() throws Exception {
-            progressBar.setStringPainted(true);
             int filesCount = countFilesInDirectory(path.toFile());
+            SwingUtilities.invokeAndWait(() -> progressBar.setString(null));
             Files.walkFileTree(path, EnumSet.noneOf(FileVisitOption.class), maxDepth, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -266,10 +266,16 @@ class FileProcessor {
                     if (!listModel.contains(customFile) &&
                             customFile.getName().toLowerCase().endsWith(".pdf")) {
                         if (customFile.getPageSize() == PageSize.VARIOUS) {
-                            progressBar.setIndeterminate(true);
-                            PDFHandler.splitDocument(customFile, rootPath)
-                                    .forEach(listModel::addElement);
-                            progressBar.setIndeterminate(false);
+                            try {
+                                SwingUtilities.invokeAndWait(() -> progressBar.setIndeterminate(true));
+                                PDFHandler.splitDocument(customFile, rootPath)
+                                        .forEach(listModel::addElement);
+                                SwingUtilities.invokeAndWait(() -> progressBar.setIndeterminate(false));
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             listModel.addElement(customFile);
                         }

@@ -6,9 +6,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6a4749b-9bf1-4167-8493-2e584b367d7f" name="Default" comment="">
+    <list default="true" id="b6a4749b-9bf1-4167-8493-2e584b367d7f" name="Default" comment="Progress bar fix&#10;&#10;Changing progress bar from EDT only + some minor code adjustments">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java" afterPath="$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java" afterPath="$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java" afterPath="$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java" />
     </list>
     <ignored path="EasyPrinter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,13 +47,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="EasyPrinter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EasyPrinter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-379">
-              <caret line="265" column="17" selection-start-line="265" selection-start-column="17" selection-end-line="265" selection-end-column="17" />
+            <state relative-caret-position="629">
+              <caret line="337" column="38" selection-start-line="337" selection-start-column="38" selection-end-line="337" selection-end-column="38" />
               <folding>
-                <element signature="e#7940#7968#0" expanded="false" />
                 <element signature="e#7940#7968#0" expanded="false" />
                 <element signature="method#MainPanel#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
                 <element signature="method#getButton#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
@@ -70,7 +71,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="e#0#2510#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,24 +83,20 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
               <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-              <folding>
-                <element signature="e#500#501#0" expanded="false" />
-                <element signature="e#527#528#0" expanded="false" />
-                <element signature="e#558#559#0" expanded="false" />
-                <element signature="e#585#586#0" expanded="false" />
-                <element signature="e#617#618#0" expanded="false" />
-                <element signature="e#644#645#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FileProcessor.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FileProcessor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
-              <folding />
+            <state relative-caret-position="1802">
+              <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+              <folding>
+                <element signature="e#9467#11178#0" expanded="true" />
+                <element signature="e#11177#11178#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -105,31 +104,10 @@
       <file leaf-file-name="CustomFile.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1428">
-              <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+            <state relative-caret-position="442">
+              <caret line="109" column="5" selection-start-line="109" selection-start-column="5" selection-end-line="109" selection-end-column="5" />
               <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#2898#2899#0" expanded="false" />
-                <element signature="e#2946#2947#0" expanded="false" />
-                <element signature="e#3957#3958#0" expanded="false" />
-                <element signature="e#3989#3990#0" expanded="false" />
-                <element signature="e#4016#4017#0" expanded="false" />
-                <element signature="e#4049#4050#0" expanded="false" />
-                <element signature="e#4091#4092#0" expanded="false" />
-                <element signature="e#4135#4136#0" expanded="false" />
-                <element signature="e#4622#4623#0" expanded="false" />
-                <element signature="e#4689#4690#0" expanded="false" />
                 <element signature="method#toString#0;class#CustomFile#0" expanded="false" />
-                <element signature="e#4896#4897#0" expanded="false" />
-                <element signature="e#4927#4928#0" expanded="false" />
-                <element signature="e#4955#4956#0" expanded="false" />
-                <element signature="e#4986#4987#0" expanded="false" />
-                <element signature="e#5021#5022#0" expanded="false" />
-                <element signature="e#5052#5053#0" expanded="false" />
-                <element signature="e#5078#5079#0" expanded="false" />
-                <element signature="e#5110#5111#0" expanded="false" />
-                <element signature="e#5140#5141#0" expanded="false" />
-                <element signature="e#5191#5192#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -241,7 +219,6 @@
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/FilesHandler.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/MainGui.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/PageSize.java" />
-        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/PDFHandler.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/FileSignature.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/ERProcessor.java" />
@@ -249,8 +226,9 @@
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/PrintHandler.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/Test.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/hjk.form" />
-        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java" />
+        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java" />
+        <option value="$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java" />
       </list>
     </option>
   </component>
@@ -311,9 +289,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -847,7 +825,14 @@
       <option name="project" value="LOCAL" />
       <updated>1477339995073</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Layout manager changed to MigLayout">
+      <created>1477340994251</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1477340994251</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView">
@@ -861,16 +846,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3240652" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24832214" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27612656" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27612656" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21162046" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -968,20 +953,13 @@
     <MESSAGE value="EasyPrinter v0.5a&#10;Fixed:&#10;- Errors linked to the splitted files loading" />
     <MESSAGE value="EasyPrinter v0.6&#10;Added:&#10;- Menu bar, about dialog; clear button removed&#10;- Possibility to process multiple ER columns at once &#10;Fixed:&#10;(- Errors linked to the splitted files loading)" />
     <MESSAGE value="Layout manager changed to MigLayout" />
-    <option name="LAST_COMMIT_MESSAGE" value="Layout manager changed to MigLayout" />
+    <MESSAGE value="Progress bar fix&#10;&#10;Changing progress bar from EDT only + some minor code adjustments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Progress bar fix&#10;&#10;Changing progress bar from EDT only + some minor code adjustments" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java</url>
-          <line>264</line>
-          <properties />
-          <option name="timeStamp" value="105" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -1100,14 +1078,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding>
-            <element signature="e#500#501#0" expanded="false" />
-            <element signature="e#527#528#0" expanded="false" />
-            <element signature="e#558#559#0" expanded="false" />
-            <element signature="e#585#586#0" expanded="false" />
-            <element signature="e#617#618#0" expanded="false" />
-            <element signature="e#644#645#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1153,37 +1124,6 @@
             <element signature="e#8094#8095#0" expanded="false" />
             <element signature="e#8135#8136#0" expanded="false" />
             <element signature="e#8174#8175#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1428">
-          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2898#2899#0" expanded="false" />
-            <element signature="e#2946#2947#0" expanded="false" />
-            <element signature="e#3957#3958#0" expanded="false" />
-            <element signature="e#3989#3990#0" expanded="false" />
-            <element signature="e#4016#4017#0" expanded="false" />
-            <element signature="e#4049#4050#0" expanded="false" />
-            <element signature="e#4091#4092#0" expanded="false" />
-            <element signature="e#4135#4136#0" expanded="false" />
-            <element signature="e#4622#4623#0" expanded="false" />
-            <element signature="e#4689#4690#0" expanded="false" />
-            <element signature="method#toString#0;class#CustomFile#0" expanded="false" />
-            <element signature="e#4896#4897#0" expanded="false" />
-            <element signature="e#4927#4928#0" expanded="false" />
-            <element signature="e#4955#4956#0" expanded="false" />
-            <element signature="e#4986#4987#0" expanded="false" />
-            <element signature="e#5021#5022#0" expanded="false" />
-            <element signature="e#5052#5053#0" expanded="false" />
-            <element signature="e#5078#5079#0" expanded="false" />
-            <element signature="e#5110#5111#0" expanded="false" />
-            <element signature="e#5140#5141#0" expanded="false" />
-            <element signature="e#5191#5192#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1251,11 +1191,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/hjk.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/hjk.form" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/java/lang/Object.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -1268,7 +1204,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1276,15 +1211,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1292,16 +1218,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#0#2510#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/CustomFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="109" column="5" selection-start-line="109" selection-start-column="5" selection-end-line="109" selection-end-column="5" />
+          <folding>
+            <element signature="method#toString#0;class#CustomFile#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/EasyPrinter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-379">
-          <caret line="265" column="17" selection-start-line="265" selection-start-column="17" selection-end-line="265" selection-end-column="17" />
+        <state relative-caret-position="629">
+          <caret line="337" column="38" selection-start-line="337" selection-start-column="38" selection-end-line="337" selection-end-column="38" />
           <folding>
-            <element signature="e#7940#7968#0" expanded="false" />
             <element signature="e#7940#7968#0" expanded="false" />
             <element signature="method#MainPanel#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
             <element signature="method#getButton#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
@@ -1310,6 +1247,17 @@
             <element signature="method#stateUpdateDirectoryOpened#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
             <element signature="method#stateUpdateERLoaded#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
             <element signature="method#stateUpdateRawLoaded#0;class#MainPanel#0;class#EasyPrinter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mancode/easyprinter/FileProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1802">
+          <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+          <folding>
+            <element signature="e#9467#11178#0" expanded="true" />
+            <element signature="e#11177#11178#0" expanded="true" />
           </folding>
         </state>
       </provider>

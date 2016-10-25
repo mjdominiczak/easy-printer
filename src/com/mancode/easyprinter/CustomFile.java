@@ -105,24 +105,7 @@ class CustomFile extends File {
         signature.setSheet(sheet);
     }
 
-    private int checkDrawingNumber() {
-        // TODO rozpoznać numer arkusza
-        String name = getName();
-        Pattern pattern = Pattern.compile("[1-9][0-9]{8}");
-        Matcher matcher = pattern.matcher(name);
-        if (matcher.lookingAt()) {
-            return Integer.parseInt(matcher.group());
-        } else {
-            pattern = Pattern.compile("([0-9]{2})k([0-9]*).*");
-            matcher = pattern.matcher(name.toLowerCase());
-            if (matcher.lookingAt()) {
-                String convertedString = matcher.group(1) + "0" + matcher.group(2);
-                return Integer.parseInt(convertedString);
-            } else return 0;
-        }
-    }
-
-    public FileSignature getSignature() {
+    FileSignature getSignature() {
         return signature;
     }
 

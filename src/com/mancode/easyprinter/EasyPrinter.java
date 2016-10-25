@@ -334,7 +334,8 @@ public class EasyPrinter extends JPanel implements ActionListener {
             System.setErr(printStream);
             progressBar = new JProgressBar(0, 100);
             progressBar.setValue(0);
-            progressBar.setStringPainted(false);
+            progressBar.setStringPainted(true);
+            progressBar.setString("");
             reset();
         }
 
