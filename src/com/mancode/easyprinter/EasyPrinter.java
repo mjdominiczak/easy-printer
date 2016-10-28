@@ -7,11 +7,10 @@ import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -23,7 +22,9 @@ import java.util.logging.SimpleFormatter;
  */
 public class EasyPrinter extends JPanel implements ActionListener {
 
-    private static final String programVersion = "v0.6";
+    private static final String programVersion = "v0.7";
+
+    private static Properties properties;
 
     private static Logger logger = Logger.getLogger(FileProcessor.class.getName());
     private final int defaultFontSize = UIManager.getDefaults().getFont("List.font").getSize();
@@ -39,19 +40,33 @@ public class EasyPrinter extends JPanel implements ActionListener {
                 "[grow]"        // rows constraints
         ));
 
+        loadProperties();
         setLogFormat();
         setLoggerProperties();
 
-        fileProcessor = new FileProcessor();
+        fileProcessor = new FileProcessor(properties);
         mainPanel = new MainPanel();
         fileProcessor.setProgressBar(mainPanel.getProgressBar());
         add(mainPanel, "grow");
         pageSizeComboBox = new JComboBox<>(fileProcessor.getPageSizeComboBoxModel());
     }
 
+    private void loadProperties() {
+        Properties defaultProperties = new Properties();
+        try {
+            defaultProperties.load(getClass().getResourceAsStream("default.properties"));
+            properties = new Properties(defaultProperties);
+            FileInputStream in = new FileInputStream("user.properties");
+            properties.load(in);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void setLogFormat() {
         System.setProperty("java.util.logging.SimpleFormatter.format",
-                "[%1$tF %1$tT] %5$s%n");
+                properties.getProperty("logFormat"));
     }
 
     private void setLoggerProperties() {
@@ -171,24 +186,28 @@ public class EasyPrinter extends JPanel implements ActionListener {
     }
 
     private void openDirectory() {
-        final JFileChooser openFileChooser = new JFileChooser();
+        final JFileChooser openFileChooser = new JFileChooser(properties.getProperty("defaultOpenPath"));
         openFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnValue = openFileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             Path path = openFileChooser.getSelectedFile().toPath();
             mainPanel.stateUpdateDirectoryOpened(path.toString());
             fileProcessor.addFilesFromDirectory(path);
+            properties.setProperty("defaultOpenPath", path.toString());
+            saveProperties();
         }
         logger.info("\tUser: " + System.getProperty("user.name") + "\topen");
     }
 
     private void loadER() {
-        final JFileChooser openFileChooser = new JFileChooser();
+        final JFileChooser openFileChooser = new JFileChooser(properties.getProperty("defaultOpenPath"));
         openFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnValue = openFileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File file = openFileChooser.getSelectedFile();
             mainPanel.stateUpdateERLoaded(file.toString());
+            properties.setProperty("defaultOpenPath", file.getParent());
+            saveProperties();
             try {
                 fileProcessor.addER(file);
             } catch (IOException e) {
@@ -200,12 +219,14 @@ public class EasyPrinter extends JPanel implements ActionListener {
     }
 
     private void loadRaw() {
-        final JFileChooser openFileChooser = new JFileChooser();
+        final JFileChooser openFileChooser = new JFileChooser(properties.getProperty("defaultOpenPath"));
         openFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnValue = openFileChooser.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File file = openFileChooser.getSelectedFile();
             mainPanel.stateUpdateRawLoaded(file.toString());
+            properties.setProperty("defaultOpenPath", file.getParent());
+            saveProperties();
             try {
                 fileProcessor.addRaw(file);
             } catch (IOException e) {
@@ -214,6 +235,22 @@ public class EasyPrinter extends JPanel implements ActionListener {
             }
         }
         logger.info("\tUser: " + System.getProperty("user.name") + "\tloadRaw");
+    }
+
+    private void merge() {
+        File directory = new File(fileProcessor.getRootPath().toString() + "\\_Merged pdfs");
+        boolean created = directory.mkdir();
+        if (created || directory.exists()) {
+            JOptionPane.showMessageDialog(this, "Merged files will be created at:\n" + directory.getPath());
+            if (directory.isDirectory() && directory.listFiles().length > 0)
+                JOptionPane.showMessageDialog(this, "Existing files will be overwritten!");
+            for (int i = 0; i < pageSizeComboBox.getModel().getSize(); i++) {
+                String filename = "all " + pageSizeComboBox.getModel().getElementAt(i).toString() + ".pdf";
+                CustomFile newFile = new CustomFile(directory, filename);
+                fileProcessor.mergeList(newFile, (PageSize)pageSizeComboBox.getModel().getElementAt(i));
+            }
+        }
+        logger.info(fileProcessor.getLogInfo());
     }
 
 //    private void print() {
@@ -236,22 +273,6 @@ public class EasyPrinter extends JPanel implements ActionListener {
 //        }
 //        logger.info("\tUser: " + System.getProperty("user.name") + "\tmerge");
 //    }
-
-    private void merge() {
-        File directory = new File(fileProcessor.getRootPath().toString() + "\\_Merged pdfs");
-        boolean created = directory.mkdir();
-        if (created || directory.exists()) {
-            JOptionPane.showMessageDialog(this, "Merged files will be created at:\n" + directory.getPath());
-            if (directory.isDirectory() && directory.listFiles().length > 0)
-                JOptionPane.showMessageDialog(this, "Existing files will be overwritten!");
-            for (int i = 0; i < pageSizeComboBox.getModel().getSize(); i++) {
-                String filename = "all " + pageSizeComboBox.getModel().getElementAt(i).toString() + ".pdf";
-                CustomFile newFile = new CustomFile(directory, filename);
-                fileProcessor.mergeList(newFile, (PageSize)pageSizeComboBox.getModel().getElementAt(i));
-            }
-        }
-        logger.info(fileProcessor.getLogInfo());
-    }
 
     private void clear() {
         mainPanel.reset();
@@ -287,6 +308,18 @@ public class EasyPrinter extends JPanel implements ActionListener {
             }
         });
         JOptionPane.showMessageDialog(this, aboutPane, "About EasyPrinter", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void saveProperties() {
+        try {
+            FileOutputStream out = new FileOutputStream("user.properties");
+            properties.store(out, "Current properties state");
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private class MainPanel extends JPanel {

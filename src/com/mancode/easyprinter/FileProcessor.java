@@ -22,12 +22,15 @@ class FileProcessor {
     private JProgressBar progressBar;
     private ERProcessor erProcessor;
     private Path rootPath;
+    private Properties properties;
 
     /**
      * Initializes fields with default, empty constructors,
      * assigns reference to progress bar for long-running tasks
      */
-    FileProcessor() {
+    FileProcessor(Properties properties) {
+        this.properties = properties;
+
         //Initialize structures for storing documents of different sizes
         fileListModelMap = new EnumMap<>(PageSize.class);
         for (PageSize pageSize : PageSize.values()) {
@@ -245,7 +248,7 @@ class FileProcessor {
     private class FileProcessorWorker extends SwingWorker<Void, Void> {
 
         private final Path path;
-        private final int maxDepth = 3;
+        private final int maxDepth = Integer.parseInt(properties.getProperty("maxSearchDepth"));
         private AtomicInteger counter = new AtomicInteger(0);
 
         FileProcessorWorker(Path path) {
