@@ -246,7 +246,7 @@ public class EasyPrinter extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Existing files will be overwritten!");
             for (int i = 0; i < pageSizeComboBox.getModel().getSize(); i++) {
                 String filename = "all " + pageSizeComboBox.getModel().getElementAt(i).toString() + ".pdf";
-                CustomFile newFile = new CustomFile(directory, filename);
+                File newFile = new File(directory, filename);
                 fileProcessor.mergeList(newFile, (PageSize)pageSizeComboBox.getModel().getElementAt(i));
             }
         }

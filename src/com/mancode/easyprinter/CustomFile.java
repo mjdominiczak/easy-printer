@@ -93,11 +93,6 @@ class CustomFile extends File {
         return getName().contains("BOM");
     }
 
-    CustomFile(File parent, String child) {
-        super(parent, child);
-        runChecks();
-    }
-
     CustomFile(File parent, String child, int sheet) {
         super(parent, child);
 //        runChecks();
