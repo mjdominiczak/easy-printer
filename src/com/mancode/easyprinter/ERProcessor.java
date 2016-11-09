@@ -65,7 +65,7 @@ class ERProcessor {
                     break;
 
                 case 1:
-                    Workbook workbook = WorkbookFactory.create(engineeringReleaseFile);
+                    Workbook workbook = WorkbookFactory.create(engineeringReleaseFile, null, true);
                     boolean isXLSX = workbook instanceof XSSFWorkbook;
                     Sheet sheet = workbook.getSheetAt(0);
                     int headerRowNo = -1;
@@ -181,12 +181,12 @@ class ERProcessor {
                             }
                         }
                     }
-                    System.err.println("---INFORMATION---");
-                    System.out.println("Reference list from ER:");
-                    referenceList.forEach(System.out::println);
-                    System.out.println("===========");
                     break;
             }
+            System.err.println("---INFORMATION---");
+            System.out.println("Reference list from ER:");
+            referenceList.forEach(System.out::println);
+            System.out.println("===========");
         } catch (InvalidFormatException e) {
             e.printStackTrace();
             System.err.println("InvalidFormatException when trying to load ER file: " + engineeringReleaseFile.getPath());
