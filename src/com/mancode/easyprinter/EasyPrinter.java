@@ -250,6 +250,7 @@ public class EasyPrinter extends JPanel implements ActionListener {
                 fileProcessor.mergeList(newFile, (PageSize)pageSizeComboBox.getModel().getElementAt(i));
             }
         }
+        JOptionPane.showMessageDialog(this, "Done!");
         logger.info(fileProcessor.getLogInfo());
     }
 
