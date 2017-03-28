@@ -54,7 +54,7 @@ public class EasyPrinter extends JPanel implements ActionListener {
     private void loadProperties() {
         Properties defaultProperties = new Properties();
         try {
-            defaultProperties.load(getClass().getResourceAsStream("default.properties"));
+            defaultProperties.load(getClass().getResourceAsStream("res/default.properties"));
             properties = new Properties(defaultProperties);
             FileInputStream in = new FileInputStream("user.properties");
             properties.load(in);
