@@ -19,9 +19,9 @@ import java.util.List;
  * Copyright reserved
  */
 
-public class CoverPageCreator {
+class CoverPageCreator {
 
-    private static final String pathTemplate = "res/template.docx";
+    private static final String pathTemplate = "res/Documentation Release template.docx";
     private final List<String> headers = new ArrayList<>(Arrays.asList(
             "ASSEMBLY ME - MP",
             "MANUFACTURING ME - PU"
