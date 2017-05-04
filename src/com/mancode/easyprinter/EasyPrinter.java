@@ -22,7 +22,7 @@ import java.util.logging.SimpleFormatter;
  */
 public class EasyPrinter extends JPanel implements ActionListener {
 
-    private static final String programVersion = "v1.0";
+    private static final String programVersion = "v1.1";
 
     private static Properties properties;
 
@@ -176,6 +176,8 @@ public class EasyPrinter extends JPanel implements ActionListener {
             loadRaw();
         } else if (e.getActionCommand().equals("merge")) {
             merge();
+        } else if (e.getActionCommand().equals("generateCovers")) {
+            generateCovers();
         } else if (e.getActionCommand().equals("clear")) {
             clear();
         } else if (e.getActionCommand().equals("exit")) {
@@ -254,26 +256,9 @@ public class EasyPrinter extends JPanel implements ActionListener {
         logger.info(fileProcessor.getLogInfo());
     }
 
-//    private void print() {
-//        mainList.getSelectedValue().printPDF();
-//    }
-
-//    private void merge() {
-//        final JFileChooser saveFileChooser = new JFileChooser();
-////        saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-//        String filename = "all " + pageSizeComboBox.getSelectedItem().toString() + ".pdf";
-//        saveFileChooser.setSelectedFile(new File(filename));
-//        int returnValue = saveFileChooser.showSaveDialog(this);
-//        if (returnValue == JFileChooser.APPROVE_OPTION) {
-//            File file = saveFileChooser.getSelectedFile();
-//            try {
-//                fileProcessor.mergeList(file, (PageSize)pageSizeComboBox.getSelectedItem());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        logger.info("\tUser: " + System.getProperty("user.name") + "\tmerge");
-//    }
+    private void generateCovers() {
+        new CoversPanel(mainPanel.getOpenPath()).showDialog(this);
+    }
 
     private void clear() {
         mainPanel.reset();
@@ -300,9 +285,7 @@ public class EasyPrinter extends JPanel implements ActionListener {
                 if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().mail(e.getURL().toURI());
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    } catch (URISyntaxException e1) {
+                    } catch (IOException | URISyntaxException e1) {
                         e1.printStackTrace();
                     }
                 }
@@ -316,15 +299,13 @@ public class EasyPrinter extends JPanel implements ActionListener {
             FileOutputStream out = new FileOutputStream("user.properties");
             properties.store(out, "Current properties state");
             out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private class MainPanel extends JPanel {
-        private JButton openButton, loadERButton, loadRawButton, mergeButton;
+        private JButton openButton, loadERButton, loadRawButton, mergeButton, createCoversButton;
         private JTextField openTextField, loadERTextField, loadRawTextField;
         private JList<CustomFile> mainList;
         private JTextArea console;
@@ -354,6 +335,9 @@ public class EasyPrinter extends JPanel implements ActionListener {
             mergeButton = getButton("Merge", "merge");
             mergeButton.setToolTipText("Click to merge pdf files of the same page size into single files");
             mergeButton.addActionListener(EasyPrinter.this);
+            createCoversButton = getButton("Generate covers", "generateCovers");
+            createCoversButton.setToolTipText("Click to generate covers .docx files");
+            createCoversButton.addActionListener(EasyPrinter.this);
             openTextField = getTextField();
             loadERTextField = getTextField();
             loadRawTextField = getTextField();
@@ -380,7 +364,8 @@ public class EasyPrinter extends JPanel implements ActionListener {
             add(loadERTextField, "sg tfs, grow");
             add(loadRawButton, "sg buttons");
             add(loadRawTextField, "sg tfs, grow");
-            add(mergeButton, "sg buttons, wrap");
+            add(mergeButton, "sg buttons");
+            add(createCoversButton, "sg buttons, wrap");
             add(new JScrollPane(mainList), "span, grow");
             add(progressBar, "dock south, growx");
             add(new JScrollPane(console), "dock east, grow, width max(200, 25%), gapbottom 6");
@@ -403,6 +388,7 @@ public class EasyPrinter extends JPanel implements ActionListener {
             loadERButton.setEnabled(false);
             loadRawButton.setEnabled(false);
             mergeButton.setEnabled(false);
+            createCoversButton.setEnabled(false);
             openTextField.setText("");
             openTextField.setEditable(false);
             loadERTextField.setText("");
@@ -417,6 +403,7 @@ public class EasyPrinter extends JPanel implements ActionListener {
             loadERButton.setEnabled(true);
             loadRawButton.setEnabled(true);
             mergeButton.setEnabled(true);
+            createCoversButton.setEnabled(true);
         }
 
         void stateUpdateERLoaded(String path) {
@@ -431,6 +418,10 @@ public class EasyPrinter extends JPanel implements ActionListener {
 
         JProgressBar getProgressBar() {
             return progressBar;
+        }
+
+        String getOpenPath() {
+            return openTextField.getText();
         }
     }
 

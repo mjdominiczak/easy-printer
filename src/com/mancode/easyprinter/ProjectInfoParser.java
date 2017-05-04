@@ -14,14 +14,14 @@ import java.util.regex.Pattern;
  * Copyright reserved
  */
 
-public class ProjectInfoParser {
+class ProjectInfoParser {
 
     private final String projectNumberPattern = "[a-zA-Z]{2}[0-9]{2}-[0-9]{7}";
     private final String projectNamePattern1 = "Projects\\\\[A-Z]{3}\\\\([\\s\\w\\\\-]*)\\\\[a-zA-Z]{2}[0-9]{2}-[0-9]{7}\\\\*";
     private final String projectNamePattern2 = projectNumberPattern + ".([\\s\\w\\-]*)\\\\*";
     private final String conveyorTypePattern = "\\D([1-9]\\d{2})\\D";
     private final String engReleaseNumberPattern = "\\D(0\\d{2})\\D?";
-    private String stringToParse;
+    private String pathToParse;
     private Properties phoneBook;
     private String projectNumber = "";
     private String projectName = "";
@@ -31,8 +31,8 @@ public class ProjectInfoParser {
     private String user = System.getProperty("user.name");
     private String phoneNumber = "";
 
-    public ProjectInfoParser(String str) {
-        stringToParse = str;
+    ProjectInfoParser(String path) {
+        pathToParse = path;
         parse();
         loadPhoneBook();
         phoneNumber = phoneBook.getProperty(user);
@@ -44,30 +44,30 @@ public class ProjectInfoParser {
 
         if (projectNumber.equals("")) {
             pattern = Pattern.compile(projectNumberPattern);
-            matcher = pattern.matcher(stringToParse);
+            matcher = pattern.matcher(pathToParse);
             if (matcher.find()) projectNumber = matcher.group();
         }
 
         if (projectName.equals("")) {
             pattern = Pattern.compile(projectNamePattern1);
-            matcher = pattern.matcher(stringToParse);
+            matcher = pattern.matcher(pathToParse);
             if (matcher.find()) projectName = matcher.group(1).replaceAll("[_\\\\]"," ");
             else {
                 pattern = Pattern.compile(projectNamePattern2);
-                matcher = pattern.matcher(stringToParse);
+                matcher = pattern.matcher(pathToParse);
                 if (matcher.find()) projectName = matcher.group(1);
             }
         }
 
         if (conveyorType.equals("")) {
             pattern = Pattern.compile(conveyorTypePattern);
-            matcher = pattern.matcher(stringToParse);
+            matcher = pattern.matcher(pathToParse);
             if (matcher.find()) conveyorType = matcher.group(1);
         }
 
         if (engReleaseNumber.equals("")) {
             pattern = Pattern.compile(engReleaseNumberPattern);
-            matcher = pattern.matcher(stringToParse);
+            matcher = pattern.matcher(pathToParse);
             if (matcher.find()) engReleaseNumber = matcher.group(1);
         }
     }
@@ -81,32 +81,64 @@ public class ProjectInfoParser {
         }
     }
 
-    public String getProjectNumber() {
+    String getPathToParse() {
+        return pathToParse;
+    }
+
+    String getProjectNumber() {
         return projectNumber;
     }
 
-    public String getProjectName() {
+    void setProjectNumber(String projectNumber) {
+        this.projectNumber = projectNumber;
+    }
+
+    String getProjectName() {
         return projectName;
     }
 
-    public String getConveyorType() {
+    void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    String getConveyorType() {
         return conveyorType;
     }
 
-    public String getEngReleaseNumber() {
+    void setConveyorType(String conveyorType) {
+        this.conveyorType = conveyorType;
+    }
+
+    String getEngReleaseNumber() {
         return engReleaseNumber;
     }
 
-    public String getReleaseDate() {
+    void setEngReleaseNumber(String engReleaseNumber) {
+        this.engReleaseNumber = engReleaseNumber;
+    }
+
+    String getReleaseDate() {
         return releaseDate;
     }
 
-    public String getUser() {
+    void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    String getUser() {
         return user;
     }
 
-    public String getPhoneNumber() {
+    void setUser(String user) {
+        this.user = user;
+    }
+
+    String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 }

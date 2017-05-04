@@ -22,7 +22,6 @@ import java.util.List;
 public class CoverPageCreator {
 
     private static final String pathTemplate = "res/template.docx";
-    private final String inputPath;
     private final List<String> headers = new ArrayList<>(Arrays.asList(
             "ASSEMBLY ME - MP",
             "MANUFACTURING ME - PU"
@@ -32,10 +31,16 @@ public class CoverPageCreator {
             "Documentation Release - Manufacturing.docx"
     ));
     private ProjectInfoParser info;
+    private String inputPath;
 
     CoverPageCreator(String path) {
         this.inputPath = path;
         info = new ProjectInfoParser(path);
+    }
+
+    CoverPageCreator(ProjectInfoParser pip) {
+        this.info = pip;
+        inputPath = pip.getPathToParse();
     }
 
     boolean generateCovers() {
