@@ -86,14 +86,11 @@ class ERProcessor {
                                 if (bomColNo < 0 && checkStringValue(cell, "BOM"))
                                     bomColNo = cell.getColumnIndex();
 
-                                //finds the first YELLOW cell
-//                                    if (colorColNo < 0 && checkFillColor(cell, "FFFFFF00"))
-                                //finds the first FILLED and NOT WHITE cell
+                                //finds the first YELLOW cell and all other YELLOW cells in the same row
                                 Color color = cell.getCellStyle().getFillForegroundColorColor();
-                                if (!searchCompleted
-                                        && (isXLSX ? color != null : !(HSSFColor.toHSSFColor(color) instanceof HSSFColor.AUTOMATIC))
+                                if ((isXLSX ? color != null : !(HSSFColor.toHSSFColor(color) instanceof HSSFColor.AUTOMATIC))
                                         && color != null
-                                        && !checkFillColor(cell, new short[]{255, 255, 255}, isXLSX))
+                                        && checkFillColor(cell, new short[]{255, 255, 0}, isXLSX))
                                     colorColList.add(cell.getColumnIndex());
                             }
                             searchCompleted = drawingColNo >= 0
@@ -106,7 +103,7 @@ class ERProcessor {
                         }
                     }
                     if (!searchCompleted) {
-                        System.err.println("Color filled cell or \"Draw. No.:\" column or \"Description\" column not found!");
+                        System.err.println("Cell with yellow fill or \"Draw. No.:\" column or \"Description\" column not found!");
                         break;
                     }
                     for (int i = headerRowNo + 1; i < sheet.getLastRowNum(); i++) {
@@ -210,7 +207,7 @@ class ERProcessor {
         short[] rgb;
         if (isXLSX) {
             XSSFColor color = XSSFColor.toXSSFColor(cell.getCellStyle().getFillForegroundColorColor());
-            if (color == null) return false;
+            if (color == null || color.isIndexed()) return false;
             rgb = new short[3];
             for (int i = 0; i < color.getRGB().length; i++) {
                 rgb[i] = (short)(color.getRGB()[i] & 0xFF);
