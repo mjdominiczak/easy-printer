@@ -202,7 +202,7 @@ class FileProcessor {
                 if (!listModel.contains(file)) {
                     listModel.addElement(file);
                 }
-                if (file.getPageSize() != PageSize.A4_BOM) {
+                if (file.getPageSize() != PageSize.A4_BOM && file.getPageSize() != PageSize.A4) {
                     listModel = fileListModelMap.get(PageSize.ALL_SIZES);
                     listModel.addElement(file);
                 }

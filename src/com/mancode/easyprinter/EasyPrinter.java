@@ -22,7 +22,7 @@ import java.util.logging.SimpleFormatter;
  */
 public class EasyPrinter extends JPanel implements ActionListener {
 
-    private static final String programVersion = "v1.1";
+    private static final String programVersion = "v1.1a";
 
     private static Properties properties;
 
