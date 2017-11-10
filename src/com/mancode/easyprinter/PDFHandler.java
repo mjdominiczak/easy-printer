@@ -1,5 +1,6 @@
 package com.mancode.easyprinter;
 
+import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -177,7 +178,7 @@ class PDFHandler {
             }
         });
         try {
-            merger.mergeDocuments(null);
+            merger.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
         } catch (IOException e) {
             e.printStackTrace();
         }
