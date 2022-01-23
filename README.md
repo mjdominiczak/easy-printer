@@ -1,7 +1,7 @@
 # Easy Printer
 
 ## Przeznaczenie programu
-Program Easy Printer powstał w celu usprawnienia procesu przygotowania dokumentacji konstrukcyjnej do przekazania do produkcji. Proces ten wiąże się z drukowaniem dużej ilości dokumentów PDF w różnych rozmiarach papieru, począwszy od rozmiaru A4, aż do powiększonych rozmiarów A0. Różne rozmiary papieru często wymagają wydruku na różnych urządzeniach, stąd konieczność rozdzielenia dokumentów pod względem wielkości formatu. Easy Printer ma za zadanie zautomatyzować tą czynność i wygenerować zbiorcze pakiety rysunków przygotowane do druku. Ponadto weryfikuje obecność odpowiednich dokumentów we wskazanym katalogu i tworzy strony tytułowe na podstawie wprowadzonych informacji o projekcie.
+Program Easy Printer powstał w celu usprawnienia procesu przygotowania dokumentacji w biurze konstrukcyjnym do przekazania do produkcji. Proces ten wiąże się z drukowaniem dużej ilości dokumentów PDF w różnych rozmiarach papieru, począwszy od rozmiaru A4, aż do powiększonych rozmiarów A0. Różne rozmiary papieru często wymagają wydruku na różnych urządzeniach, stąd konieczność rozdzielenia dokumentów pod względem wielkości formatu. Easy Printer ma za zadanie zautomatyzować tą czynność i wygenerować zbiorcze pakiety rysunków przygotowane do druku. Ponadto weryfikuje obecność odpowiednich dokumentów we wskazanym katalogu i tworzy strony tytułowe na podstawie wprowadzonych informacji o projekcie.
 
 ## Opis działania programu
 1. Użytkownik wskazuje ścieżkę z dokumentami do wydrukowania (przycisk „Open directory”).
@@ -19,5 +19,7 @@ Program Easy Printer powstał w celu usprawnienia procesu przygotowania dokument
 
 ## Zrzuty ekranu
 
-[Okno główne programu](pictures/okno_glowne.png)
-[Wprowadzanie danych do okładek](https://github.com/mjdominiczak/easy-printer/pictures/dane_okladki.png)
+### Okno główne
+![Okno główne programu](https://github.com/mjdominiczak/easy-printer/blob/master/pictures/okno_glowne.png?raw=true)
+### Formularz uzupełnienia danych okładek
+![Wprowadzanie danych do okładek](https://github.com/mjdominiczak/easy-printer/blob/master/pictures/dane_okladki.png?raw=true)
